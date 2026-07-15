@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guías para comprar y vender · Cardash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--lime:#1C3F9E;--lime-dark:#142f78;--royal-light:#7aa2ff;--ink:#0a1e44;
+    --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;--white:#fff;
+    --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);--maxw:1120px;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s,background .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:#fff}.btn-lime:hover{background:var(--lime-dark)}
+  .btn-dark{background:var(--ink);color:#fff}.btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--gray-300)}
+  header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav-links a,.brand,.lang,.menu-toggle{color:#fff}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:#fff;display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+  .nav-links a:hover{opacity:.65}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{font-weight:600;font-size:14px}
+  .menu-toggle{display:none;background:none;border:none;font-size:26px;cursor:pointer}
+
+  .ghero{background:var(--ink);color:#fff;padding:56px 0}
+  .ghero .crumb{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:14px}
+  .ghero .crumb a:hover{color:#fff}
+  .ghero h1{font-size:clamp(32px,5vw,48px)}
+  .ghero p{color:rgba(255,255,255,.8);font-size:18px;margin-top:12px;max-width:640px}
+
+  .layout{display:grid;grid-template-columns:240px 1fr;gap:48px;padding:48px 0 72px;align-items:start}
+  .toc{position:sticky;top:92px}
+  .toc .lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);font-weight:700;margin-bottom:14px}
+  .toc a{display:block;padding:9px 14px;border-radius:10px;font-size:14px;font-weight:600;color:var(--gray-700);margin-bottom:4px}
+  .toc a:hover{background:var(--gray-100);color:var(--ink)}
+
+  article{max-width:720px}
+  .guide{margin-bottom:56px;scroll-margin-top:90px}
+  .guide .tagrow{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .guide .gtag{background:rgba(28,63,158,.1);color:var(--lime);font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px}
+  .guide .read{color:var(--gray-500);font-size:13px}
+  .guide h2{font-size:30px;margin-bottom:8px}
+  .guide .lead{font-size:18px;color:var(--gray-700);margin-bottom:20px}
+  .guide h3{font-size:20px;margin:26px 0 10px}
+  .guide p{color:var(--gray-700);margin-bottom:14px}
+  .guide ul{margin:0 0 16px 20px;color:var(--gray-700)}
+  .guide li{margin-bottom:8px}
+  .guide .steps{counter-reset:s;list-style:none;margin:16px 0}
+  .guide .steps li{counter-increment:s;position:relative;padding:14px 16px 14px 56px;background:var(--gray-100);border-radius:12px;margin-bottom:10px;font-weight:500}
+  .guide .steps li::before{content:counter(s);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:28px;height:28px;background:var(--lime);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px}
+  .callout{background:rgba(28,63,158,.06);border:1px solid rgba(28,63,158,.15);border-radius:12px;padding:16px 18px;margin:16px 0;font-size:15px}
+  .callout b{color:var(--ink)}
+  .cta-strip{background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:32px;margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .cta-strip h3{color:#fff;font-size:20px}
+
+  footer{background:var(--ink);color:rgba(255,255,255,.75);padding:56px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{color:#fff;margin-bottom:14px}
+  .foot-brand p{font-size:14px;max-width:280px}
+  .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;font-size:14px;margin-bottom:10px}
+  .foot-col a:hover{color:var(--royal-light)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
+
+  @media(max-width:860px){.layout{grid-template-columns:1fr}.toc{position:static;display:flex;gap:8px;overflow-x:auto}.toc .lbl{display:none}}
+  @media(max-width:640px){.nav-links,.lang{display:none}.menu-toggle{display:block}.foot-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
+    <nav class="nav-links">
+      <a href="buscar.html">Comprar</a><a href="buscar.html">Alquilar</a>
+      <a href="index.html#tipos">Por tipo</a><a href="directorio.html">Directorio</a>
+    </nav>
+    <div class="nav-right">
+      <span class="lang">🌐 Español ▾</span>
+      <a class="btn btn-ghost" href="entrar.html">Entrar</a>
+      <a class="btn btn-dark" href="entrar.html">Registrarme</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<section class="ghero">
+  <div class="wrap">
+    <div class="crumb"><a href="index.html">Inicio</a> / Guías</div>
+    <h1>Guías para comprar y vender</h1>
+    <p>Todo lo que necesitas saber para moverte con confianza en el mercado de autos de Venezuela.</p>
+  </div>
+</section>
+
+<div class="wrap layout">
+  <aside class="toc">
+    <div class="lbl">En esta página</div>
+    <a href="#comprar">🚗 Cómo comprar un auto usado</a>
+    <a href="#vender">💵 Cómo vender tu auto</a>
+    <a href="#traspaso">🛡️ Traspaso y documentos</a>
+  </aside>
+
+  <article>
+    <section class="guide" id="comprar">
+      <div class="tagrow"><span class="gtag">COMPRAR</span><span class="read">6 min de lectura</span></div>
+      <h2>Cómo comprar un auto usado en Venezuela</h2>
+      <p class="lead">Comprar un auto usado puede salir excelente si haces la tarea. Esta guía te lleva paso a paso para que no te lleves sorpresas.</p>
+
+      <h3>1. Define tu presupuesto real</h3>
+      <p>Además del precio del auto, aparta dinero para el traspaso, el seguro y una revisión mecánica. Una buena regla es reservar entre un 5% y un 10% extra sobre el precio de compra para estos gastos.</p>
+
+      <h3>2. Busca y compara</h3>
+      <p>Usa los filtros de Cardash para acotar por tipo, marca, año, kilometraje y ubicación. Compara precios de modelos parecidos para saber si una oferta es realista.</p>
+      <div class="callout">💡 <b>Ojo con los precios muy bajos.</b> Si un auto está muy por debajo del mercado, casi siempre hay una razón: choque, papeles en desorden o problemas mecánicos.</div>
+
+      <h3>3. Revisa antes de pagar</h3>
+      <ul class="steps">
+        <li>Pide fotos reales y recientes, no solo de catálogo.</li>
+        <li>Verifica el kilometraje y que cuadre con el estado del auto.</li>
+        <li>Lleva un perito o mecánico de confianza a inspeccionarlo.</li>
+        <li>Revisa que el número de chasis coincida con los documentos.</li>
+      </ul>
+
+      <h3>4. Cierra con seguridad</h3>
+      <p>Nunca pagues por adelantado sin ver el auto en persona. Haz el pago el mismo día del traspaso y guarda todos los comprobantes.</p>
+      <div class="cta-strip">
+        <h3>¿Listo para buscar?</h3>
+        <a class="btn btn-lime" href="buscar.html">Ver autos en venta</a>
+      </div>
+    </section>
+
+    <section class="guide" id="vender">
+      <div class="tagrow"><span class="gtag">VENDER</span><span class="read">5 min de lectura</span></div>
+      <h2>Cómo vender tu auto</h2>
+      <p class="lead">Vender rápido y a buen precio es cuestión de preparación. Sigue estos pasos y tu publicación destacará.</p>
+
+      <h3>1. Prepara el auto</h3>
+      <p>Lávalo, aspíralo y arregla los detalles pequeños. Un auto limpio y presentable se vende más rápido y por más dinero.</p>
+
+      <h3>2. Reúne los papeles</h3>
+      <ul>
+        <li>Título de propiedad a tu nombre.</li>
+        <li>Cédula y RIF actualizados.</li>
+        <li>Certificado de origen o documento de importación (si aplica).</li>
+        <li>Solvencia y últimos pagos al día.</li>
+      </ul>
+
+      <h3>3. Fija un precio justo</h3>
+      <p>Investiga cuánto piden por autos como el tuyo en Cardash. Un precio realista atrae más interesados que uno inflado que nadie contacta.</p>
+
+      <h3>4. Publica gratis</h3>
+      <p>Con buenas fotos y una descripción honesta, tu auto llega a miles de compradores. Publicar en Cardash toma solo unos minutos.</p>
+      <div class="cta-strip">
+        <h3>Publica tu auto gratis</h3>
+        <a class="btn btn-lime" href="publicar.html">Publicar ahora</a>
+      </div>
+    </section>
+
+    <section class="guide" id="traspaso">
+      <div class="tagrow"><span class="gtag">DOCUMENTOS</span><span class="read">4 min de lectura</span></div>
+      <h2>Traspaso y documentos</h2>
+      <p class="lead">El traspaso es el paso que hace legal el cambio de dueño. Hazlo bien y evita dolores de cabeza a futuro.</p>
+
+      <h3>Pasos del traspaso</h3>
+      <ul class="steps">
+        <li>Redacta el documento de compra-venta con los datos de ambas partes.</li>
+        <li>Autentica la venta en una notaría.</li>
+        <li>Registra el cambio de propietario ante el INTT.</li>
+        <li>Actualiza el seguro a nombre del nuevo dueño.</li>
+      </ul>
+      <div class="callout">🛡️ <b>Consejo de seguridad:</b> haz el pago y la firma del traspaso el mismo día, en un lugar seguro y con ambas partes presentes.</div>
+      <p>Si tienes dudas, en el <a href="directorio.html" style="color:var(--lime);font-weight:700">directorio de Cardash</a> encuentras peritos, gestores y aseguradoras verificados que te acompañan en todo el proceso.</p>
+    </section>
+  </article>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
+        <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
+      </div>
+      <div class="foot-col"><h4>Explorar</h4><a href="buscar.html">Autos en venta</a><a href="buscar.html">Autos en alquiler</a><a href="index.html#tipos">Por tipo</a><a href="#">Por estado</a></div>
+      <div class="foot-col"><h4>Cardash</h4><a href="publicar.html">Publicar gratis</a><a href="directorio.html">Directorio</a><a href="guias.html">Guías</a><a href="#">Nosotros</a></div>
+      <div class="foot-col"><h4>Recursos</h4><a href="#">Ayuda</a><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Contacto</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Cardash. Todos los derechos reservados.</span><span>Hecho en Venezuela 🇻🇪</span></div>
+  </div>
+</footer>
+</body>
+</html>

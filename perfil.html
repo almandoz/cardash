@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automotriz Andes · Cardash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--lime:#1C3F9E;--lime-dark:#142f78;--royal-light:#7aa2ff;--ink:#0a1e44;--blue:#2f6df0;--green:#1faa59;
+    --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;--white:#fff;
+    --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);--shadow-lg:0 20px 60px rgba(0,0,0,.15);--maxw:1120px;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--gray-100);line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s,background .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:#fff}.btn-lime:hover{background:var(--lime-dark)}
+  .btn-dark{background:var(--ink);color:#fff}.btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--gray-300)}
+  .btn-wa{background:var(--green);color:#fff}.btn-block{width:100%}
+  header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav-links a,.brand,.lang,.menu-toggle{color:#fff}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:#fff;display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+  .nav-links a:hover{opacity:.65}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{font-weight:600;font-size:14px}
+  .menu-toggle{display:none;background:none;border:none;font-size:26px;cursor:pointer}
+  .crumb{font-size:13px;color:var(--gray-500);padding:16px 0}
+  .crumb a:hover{color:var(--ink)}
+
+  /* Profile header */
+  .phead{background:#fff;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+  .cover{height:150px;background:var(--ink);position:relative}
+  .cover::after{content:"";position:absolute;inset:0;opacity:.5;background:radial-gradient(60% 120% at 80% 0%,rgba(60,110,255,.5),transparent 70%)}
+  .pinner{padding:0 32px 28px;display:flex;gap:22px;align-items:flex-end;margin-top:-46px;position:relative;flex-wrap:wrap}
+  .pav{width:104px;height:104px;border-radius:22px;background:var(--lime);color:#fff;display:grid;place-items:center;font-family:'Archivo';font-weight:900;font-size:40px;border:4px solid #fff;flex:0 0 auto}
+  .pmeta{flex:1;min-width:220px;padding-bottom:4px}
+  .pmeta .nm{font-family:'Archivo';font-weight:900;font-size:28px;display:flex;align-items:center;gap:10px}
+  .vchk{width:22px;height:22px;background:var(--blue);color:#fff;border-radius:50%;display:inline-grid;place-items:center;font-size:12px}
+  .pmeta .sub{color:var(--gray-500);font-size:15px;margin-top:4px;display:flex;gap:14px;flex-wrap:wrap}
+  .pact{display:flex;gap:10px;padding-bottom:6px;flex-wrap:wrap}
+  .verified-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(31,170,89,.1);color:var(--green);font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;margin-top:12px}
+
+  /* Stats row */
+  .pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+  .pstat{background:#fff;border-radius:var(--radius);padding:20px;text-align:center;box-shadow:var(--shadow)}
+  .pstat .n{font-family:'Archivo';font-weight:900;font-size:26px;color:var(--lime)}
+  .pstat .l{font-size:12px;color:var(--gray-500);margin-top:4px;letter-spacing:.03em}
+
+  .layout{display:grid;grid-template-columns:1fr 320px;gap:28px;padding:8px 0 64px;align-items:start}
+  .sec{background:#fff;border-radius:var(--radius-lg);padding:26px;box-shadow:var(--shadow);margin-bottom:24px}
+  .sec h2{font-size:22px;margin-bottom:16px}
+  .sec .about{color:var(--gray-700);font-size:15px;line-height:1.7}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .car-card{background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.2s;cursor:pointer;display:block}
+  .car-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+  .car-photo{height:150px;position:relative;overflow:hidden;background:var(--gray-100)}
+  .car-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+  .car-card:hover .car-photo img{transform:scale(1.05)}
+  .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--lime);color:#fff}
+  .car-body{padding:14px}
+  .car-price{font-family:'Archivo';font-weight:900;font-size:19px}
+  .car-title{font-weight:800;font-family:'Archivo';font-size:14px;margin-top:6px}
+  .car-loc{color:var(--gray-500);font-size:12px;margin-top:3px}
+  .car-specs{display:flex;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100);font-size:11px;color:var(--gray-700);flex-wrap:wrap}
+
+  /* Reviews */
+  .review{padding:16px 0;border-bottom:1px solid var(--gray-100)}
+  .review:last-child{border-bottom:none}
+  .review .rtop{display:flex;align-items:center;gap:10px}
+  .review .rav{width:38px;height:38px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+  .review .rn{font-weight:700;font-size:14px}
+  .review .rd{color:var(--gray-500);font-size:12px}
+  .review .stars{color:#f5a623;font-size:13px;margin-top:2px}
+  .review p{color:var(--gray-700);font-size:14px;margin-top:8px}
+
+  /* Sidebar contact */
+  .side{position:sticky;top:92px;display:flex;flex-direction:column;gap:16px}
+  .contact{background:#fff;border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow)}
+  .contact h3{font-size:17px;margin-bottom:14px}
+  .contact .btn{margin-bottom:10px}
+  .contact .row{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--gray-700);margin-top:10px}
+  .safety{background:var(--gray-100);border-radius:var(--radius);padding:16px;font-size:13px;color:var(--gray-700);margin-top:6px}
+  .safety b{color:var(--ink)}
+
+  footer{background:var(--ink);color:rgba(255,255,255,.75);padding:56px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{color:#fff;margin-bottom:14px}
+  .foot-brand p{font-size:14px;max-width:280px}
+  .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;font-size:14px;margin-bottom:10px}
+  .foot-col a:hover{color:var(--royal-light)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
+
+  @media(max-width:860px){.layout{grid-template-columns:1fr}.side{position:static}.pstats{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.nav-links,.lang{display:none}.menu-toggle{display:block}.cards{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
+    <nav class="nav-links">
+      <a href="buscar.html">Comprar</a><a href="buscar.html">Alquilar</a>
+      <a href="index.html#tipos">Por tipo</a><a href="directorio.html">Directorio</a>
+    </nav>
+    <div class="nav-right">
+      <span class="lang">🌐 Español ▾</span>
+      <a class="btn btn-ghost" href="entrar.html">Entrar</a>
+      <a class="btn btn-dark" href="entrar.html">Registrarme</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="crumb"><a href="index.html">Inicio</a> / <a href="directorio.html">Directorio</a> / Automotriz Andes</div>
+
+  <div class="phead">
+    <div class="cover"></div>
+    <div class="pinner">
+      <div class="pav">A</div>
+      <div class="pmeta">
+        <div class="nm">Automotriz Andes <span class="vchk">✓</span></div>
+        <div class="sub"><span>🏢 Concesionario</span><span>📍 Chacao · Caracas</span><span>⭐ 4.8 (126 reseñas)</span></div>
+        <span class="verified-tag">✓ Agencia verificada por Cardash</span>
+      </div>
+      <div class="pact">
+        <a class="btn btn-wa" href="#">💬 WhatsApp</a>
+        <a class="btn btn-ghost" href="#">Seguir</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="pstats">
+    <div class="pstat"><div class="n">37</div><div class="l">Autos publicados</div></div>
+    <div class="pstat"><div class="n">15</div><div class="l">Años en el mercado</div></div>
+    <div class="pstat"><div class="n">4.8</div><div class="l">Calificación</div></div>
+    <div class="pstat"><div class="n">126</div><div class="l">Reseñas</div></div>
+  </div>
+
+  <div class="layout">
+    <div class="main">
+      <div class="sec">
+        <h2>Sobre nosotros</h2>
+        <p class="about">Automotriz Andes es un concesionario multimarca con más de 15 años en el mercado venezolano. Nos especializamos en la compra, venta y consignación de vehículos verificados, con garantía y todos los papeles en regla. Cada auto pasa por una inspección técnica antes de publicarse. Nuestro compromiso es que compres con total confianza y acompañarte en todo el proceso, desde la elección hasta el traspaso.</p>
+      </div>
+
+      <div class="sec">
+        <h2>Autos disponibles (37)</h2>
+        <div class="cards">
+          <a class="car-card" href="auto.html">
+            <div class="car-photo"><img src="img/4runner.jpg" alt="4Runner"><span class="badge">En venta</span></div>
+            <div class="car-body"><div class="car-price">$42.000</div><div class="car-title">Toyota 4Runner 2022</div><div class="car-loc">Chacao · Caracas</div><div class="car-specs"><span>🛣️ 28.000 km</span><span>⚙️ Automático</span></div></div>
+          </a>
+          <a class="car-card" href="auto.html">
+            <div class="car-photo"><img src="img/prado.jpg" alt="Prado"><span class="badge">En venta</span></div>
+            <div class="car-body"><div class="car-price">$65.000</div><div class="car-title">Toyota Land Cruiser Prado 2022</div><div class="car-loc">La Castellana · Caracas</div><div class="car-specs"><span>🛣️ 19.000 km</span><span>⚙️ Automático</span></div></div>
+          </a>
+          <a class="car-card" href="auto.html">
+            <div class="car-photo"><img src="img/corolla.jpg" alt="Corolla"><span class="badge">En venta</span></div>
+            <div class="car-body"><div class="car-price">$24.900</div><div class="car-title">Toyota Corolla 2021</div><div class="car-loc">Chacao · Caracas</div><div class="car-specs"><span>🛣️ 52.000 km</span><span>⚙️ CVT</span></div></div>
+          </a>
+          <a class="car-card" href="auto.html">
+            <div class="car-photo"><img src="img/fortuner.jpg" alt="Fortuner"><span class="badge">En venta</span></div>
+            <div class="car-body"><div class="car-price">$45.900</div><div class="car-title">Toyota Fortuner 2023</div><div class="car-loc">Chacao · Caracas</div><div class="car-specs"><span>🛣️ 22.000 km</span><span>⚙️ Automático</span></div></div>
+          </a>
+        </div>
+        <div style="text-align:center;margin-top:20px"><a class="btn btn-ghost" href="buscar.html">Ver los 37 autos</a></div>
+      </div>
+
+      <div class="sec">
+        <h2>Reseñas (126)</h2>
+        <div class="review">
+          <div class="rtop"><span class="rav" style="background:#2f6df0">LF</span><div><div class="rn">Luis Fernández</div><div class="rd">Hace 2 semanas</div></div></div>
+          <div class="stars">★★★★★</div>
+          <p>Excelente atención. Compré un 4Runner y todo el proceso fue transparente, con el auto tal cual las fotos. Recomendados.</p>
+        </div>
+        <div class="review">
+          <div class="rtop"><span class="rav" style="background:#1faa59">MG</span><div><div class="rn">María Gutiérrez</div><div class="rd">Hace 1 mes</div></div></div>
+          <div class="stars">★★★★★</div>
+          <p>Me acompañaron en todo el traspaso y respondieron cada duda. Muy profesionales y honestos con el estado del vehículo.</p>
+        </div>
+        <div class="review">
+          <div class="rtop"><span class="rav" style="background:#a8560f">JR</span><div><div class="rn">José Ramírez</div><div class="rd">Hace 2 meses</div></div></div>
+          <div class="stars">★★★★☆</div>
+          <p>Buen concesionario, autos bien cuidados. El precio era un poco alto pero llegamos a un acuerdo justo.</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="contact">
+        <h3>Contactar a Automotriz Andes</h3>
+        <a class="btn btn-wa btn-block" href="#">💬 Escribir por WhatsApp</a>
+        <a class="btn btn-dark btn-block" href="#">📞 Llamar</a>
+        <a class="btn btn-ghost btn-block" href="#">✉️ Enviar correo</a>
+        <div class="row">🕘 Lun a Sáb · 9:00 a 18:00</div>
+        <div class="row">📍 Av. Principal de Chacao, Caracas</div>
+        <div class="safety" style="margin-top:16px"><b>🛡️ Compra segura.</b> Nunca hagas pagos por adelantado sin ver el auto en persona y verificar los documentos.</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
+        <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
+      </div>
+      <div class="foot-col"><h4>Explorar</h4><a href="buscar.html">Autos en venta</a><a href="buscar.html">Autos en alquiler</a><a href="index.html#tipos">Por tipo</a><a href="#">Por estado</a></div>
+      <div class="foot-col"><h4>Cardash</h4><a href="publicar.html">Publicar gratis</a><a href="directorio.html">Directorio</a><a href="guias.html">Guías</a><a href="#">Nosotros</a></div>
+      <div class="foot-col"><h4>Recursos</h4><a href="#">Ayuda</a><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Contacto</a></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Cardash. Todos los derechos reservados.</span><span>Hecho en Venezuela 🇻🇪</span></div>
+  </div>
+</footer>
+</body>
+</html>

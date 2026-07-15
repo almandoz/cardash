@@ -255,10 +255,9 @@
       <a href="directorio.html">Directorio</a>
     </nav>
     <div class="nav-right">
-      <a class="pill-aid" href="#">💚 Red de Ayuda</a>
       <span class="lang">🌐 Español ▾</span>
-      <a class="btn btn-ghost" href="#">Entrar</a>
-      <a class="btn btn-dark" href="#">Registrarme</a>
+      <a class="btn btn-ghost" href="entrar.html">Entrar</a>
+      <a class="btn btn-dark" href="entrar.html">Registrarme</a>
     </div>
     <button class="menu-toggle" aria-label="Menú">☰</button>
   </div>
@@ -317,7 +316,7 @@
         <h2>Explora por tipo de vehículo</h2>
         <p>Encuentra exactamente lo que buscas</p>
       </div>
-      <a class="link" href="#">Ver todos</a>
+      <a class="link" href="buscar.html">Ver todos</a>
     </div>
     <div class="types">
       <div class="type-card"><div class="ico">🚗</div><div class="name">Sedanes</div></div>
@@ -340,7 +339,7 @@
         <h2>Autos destacados</h2>
         <p>Una selección de vehículos destacados en la portada</p>
       </div>
-      <a class="link" href="#">Ver todos</a>
+      <a class="link" href="buscar.html">Ver todos</a>
     </div>
     <div class="cards">
 
@@ -429,13 +428,13 @@
         <div class="ico">🔑</div>
         <h3>Comprar</h3>
         <p>Explora sedanes, SUVs, pickups y más a la venta en todo el país.</p>
-        <a href="#">Ver autos en venta →</a>
+        <a href="buscar.html?op=venta">Ver autos en venta →</a>
       </div>
       <div class="todo-card">
         <div class="ico">📅</div>
         <h3>Alquilar</h3>
         <p>Encuentra tu próximo auto por días, semanas o meses.</p>
-        <a href="#">Ver autos en alquiler →</a>
+        <a href="buscar.html?op=alquiler">Ver autos en alquiler →</a>
       </div>
       <div class="todo-card">
         <div class="ico">💰</div>
@@ -498,7 +497,7 @@
         <h2>Guías para comprar y vender</h2>
         <p>Consejos prácticos para moverte con confianza en el mercado</p>
       </div>
-      <a class="link" href="#">Ver todas las guías</a>
+      <a class="link" href="guias.html">Ver todas las guías</a>
     </div>
     <div class="guides">
       <div class="guide">
@@ -506,7 +505,7 @@
         <div class="gb">
           <h3>Cómo comprar un auto usado</h3>
           <p>Qué revisar, documentos y costos para comprar con confianza.</p>
-          <a href="#">Leer más →</a>
+          <a href="guias.html">Leer más →</a>
         </div>
       </div>
       <div class="guide">
@@ -514,7 +513,7 @@
         <div class="gb">
           <h3>Cómo vender tu auto</h3>
           <p>Prepara tus papeles, fija el precio en USD y publica gratis.</p>
-          <a href="#">Leer más →</a>
+          <a href="guias.html">Leer más →</a>
         </div>
       </div>
       <div class="guide">
@@ -522,7 +521,7 @@
         <div class="gb">
           <h3>Traspaso y documentos</h3>
           <p>Título, notaría, INTT y seguros explicados paso a paso.</p>
-          <a href="#">Leer más →</a>
+          <a href="guias.html">Leer más →</a>
         </div>
       </div>
     </div>
@@ -536,12 +535,12 @@
       <h2>¿Necesitas un profesional?</h2>
       <p>Agencias, vendedores, talleres, peritos, aseguradoras y financiamiento verificados en todo el país.</p>
       <div class="dir-tags">
-        <span class="dir-tag">Agencias</span>
-        <span class="dir-tag">Vendedores</span>
-        <span class="dir-tag">Talleres</span>
-        <span class="dir-tag">Peritos</span>
-        <span class="dir-tag">Aseguradoras</span>
-        <span class="dir-tag">Financiamiento</span>
+        <a class="dir-tag" href="directorio.html">Agencias</a>
+        <a class="dir-tag" href="directorio.html">Vendedores</a>
+        <a class="dir-tag" href="directorio.html">Talleres</a>
+        <a class="dir-tag" href="directorio.html">Peritos</a>
+        <a class="dir-tag" href="directorio.html">Aseguradoras</a>
+        <a class="dir-tag" href="directorio.html">Financiamiento</a>
       </div>
     </div>
   </div>
@@ -597,6 +596,17 @@
   document.querySelectorAll('.car-card').forEach(card=>{
     card.style.cursor='pointer';
     card.addEventListener('click',()=>{ window.location.href='auto.html'; });
+  });
+  // Tarjetas de tipo de vehículo -> búsqueda filtrada
+  const tipoMap={Sedanes:'Sedán',SUVs:'SUV',Pickups:'Pickup'};
+  document.querySelectorAll('.type-card').forEach(c=>{
+    c.style.cursor='pointer';
+    c.addEventListener('click',()=>{ const t=tipoMap[c.querySelector('.name').textContent.trim()]; window.location.href='buscar.html'+(t?('?tipo='+encodeURIComponent(t)):''); });
+  });
+  // Tarjetas "¿Qué quieres hacer?" -> su enlace
+  document.querySelectorAll('.todo-card').forEach(c=>{
+    const a=c.querySelector('a'); if(!a) return; c.style.cursor='pointer';
+    c.addEventListener('click',e=>{ if(e.target.tagName!=='A') window.location.href=a.getAttribute('href'); });
   });
 </script>
 </body>

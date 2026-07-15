@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar · Cardash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--lime:#1C3F9E;--lime-dark:#142f78;--royal-light:#7aa2ff;--ink:#0a1e44;--green:#1faa59;
+    --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;--white:#fff;
+    --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);--shadow-lg:0 20px 60px rgba(0,0,0,.18);}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+    background:
+      radial-gradient(60% 60% at 80% 10%, rgba(60,110,255,.25), transparent 70%),
+      radial-gradient(50% 50% at 10% 90%, rgba(28,63,158,.3), transparent 70%),
+      #0a1e44;}
+  h1,h2{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+
+  .card{background:#fff;border-radius:24px;box-shadow:var(--shadow-lg);width:100%;max-width:440px;padding:36px;position:relative}
+  .brand{display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:var(--ink);margin-bottom:6px}
+  .brand .logo{width:36px;height:36px;border-radius:10px;background:var(--gray-100);display:grid;place-items:center}
+  .sub{text-align:center;color:var(--gray-500);font-size:14px;margin-bottom:24px}
+
+  .tabs{display:flex;background:var(--gray-100);border-radius:999px;padding:4px;margin-bottom:24px}
+  .tabs button{flex:1;border:none;background:none;padding:11px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gray-500);font-family:inherit}
+  .tabs button.on{background:var(--lime);color:#fff}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px}
+  .field input{width:100%;border:1.5px solid var(--gray-300);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none;transition:border .15s}
+  .field input:focus{border-color:var(--ink)}
+  .row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:13px}
+  .row-between a{color:var(--lime);font-weight:700}
+  .chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:13px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s,background .2s;width:100%;font-family:inherit}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:#fff}.btn-lime:hover{background:var(--lime-dark)}
+  .divider{display:flex;align-items:center;gap:12px;color:var(--gray-500);font-size:13px;margin:20px 0}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--gray-300)}
+  .social{display:flex;gap:10px}
+  .social button{flex:1;border:1.5px solid var(--gray-300);background:#fff;border-radius:12px;padding:11px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+  .social button:hover{background:var(--gray-100)}
+  .note{background:var(--gray-100);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--gray-500);margin-top:20px;text-align:center}
+  .back{text-align:center;margin-top:18px;font-size:14px}
+  .back a{color:var(--gray-500);font-weight:600}
+  .back a:hover{color:var(--ink)}
+  .msg{display:none;background:rgba(31,170,89,.12);color:var(--green);border-radius:12px;padding:12px 14px;font-size:14px;font-weight:600;text-align:center;margin-bottom:16px}
+  .msg.on{display:block}
+  .hide{display:none}
+</style>
+</head>
+<body>
+  <div class="card">
+    <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
+    <div class="sub" id="sub">Entra para guardar tus favoritos y gestionar tus publicaciones</div>
+
+    <div class="tabs">
+      <button id="tab-in" class="on" onclick="setTab('in')">Entrar</button>
+      <button id="tab-up" onclick="setTab('up')">Crear cuenta</button>
+    </div>
+
+    <div class="msg" id="msg"></div>
+
+    <form id="form" onsubmit="return submitForm(event)">
+      <div class="field" id="f-name">
+        <label>Nombre o agencia</label>
+        <input type="text" placeholder="Ej: Automotriz Andes">
+      </div>
+      <div class="field">
+        <label>Correo</label>
+        <input type="email" placeholder="tucorreo@ejemplo.com" required>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" placeholder="••••••••" required>
+      </div>
+      <div class="row-between">
+        <label class="chk"><input type="checkbox"> Recordarme</label>
+        <a href="#" id="forgot">¿Olvidaste tu contraseña?</a>
+      </div>
+      <button class="btn btn-lime" type="submit" id="submit">Entrar</button>
+    </form>
+
+    <div class="divider">o continúa con</div>
+    <div class="social">
+      <button type="button" onclick="demo()">🔵 Google</button>
+      <button type="button" onclick="demo()"> Apple</button>
+    </div>
+
+    <div class="note">🔒 Esta es una demo de Cardash. No se envía ni se guarda ningún dato.</div>
+    <div class="back"><a href="index.html">← Volver al inicio</a></div>
+  </div>
+
+<script>
+  let tab='in';
+  function setTab(t){
+    tab=t;
+    document.getElementById('tab-in').classList.toggle('on',t==='in');
+    document.getElementById('tab-up').classList.toggle('on',t==='up');
+    document.getElementById('f-name').classList.toggle('hide',t!=='up');
+    document.getElementById('forgot').classList.toggle('hide',t==='up');
+    document.getElementById('submit').textContent = t==='up' ? 'Crear cuenta' : 'Entrar';
+    document.getElementById('sub').textContent = t==='up'
+      ? 'Crea tu cuenta gratis para publicar y contactar vendedores'
+      : 'Entra para guardar tus favoritos y gestionar tus publicaciones';
+    document.getElementById('msg').classList.remove('on');
+  }
+  function submitForm(e){
+    e.preventDefault();
+    const m=document.getElementById('msg');
+    m.textContent = tab==='up' ? '✓ Cuenta creada (demo). ¡Bienvenido a Cardash!' : '✓ Sesión iniciada (demo).';
+    m.classList.add('on');
+    return false;
+  }
+  function demo(){
+    const m=document.getElementById('msg');
+    m.textContent='Inicio de sesión social (demo).';
+    m.classList.add('on');
+  }
+  // ?registro abre la pestaña de crear cuenta
+  if(new URLSearchParams(location.search).has('registro')) setTab('up');
+  setTab(tab);
+</script>
+</body>
+</html>
