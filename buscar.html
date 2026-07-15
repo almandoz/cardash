@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --lime:#C7FF02;--lime-dark:#a8d900;--ink:#0d0f0a;--gray-900:#1a1c17;
+    --lime:#1C3F9E;--lime-dark:#142f78;--royal-light:#7aa2ff;--ink:#0a1e44;--gray-900:#1a1c17;
     --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;
     --white:#fff;--red:#e4443a;--blue:#2f6df0;
     --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);
@@ -23,16 +23,17 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s ease,background .2s ease}
   .btn:hover{transform:translateY(-2px)}
-  .btn-lime{background:var(--lime);color:var(--ink)}
+  .btn-lime{background:var(--lime);color:#fff}
   .btn-lime:hover{background:var(--lime-dark)}
   .btn-dark{background:var(--ink);color:#fff}
   .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--gray-300)}
 
   /* Header */
   header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav-links a,.brand,.lang,.menu-toggle{color:#fff}
   .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
-  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:var(--ink)}
-  .brand .logo{width:34px;height:34px;border-radius:9px;background:var(--ink);display:grid;place-items:center;font-size:20px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:#fff}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:#fff;display:grid;place-items:center;font-size:20px;box-shadow:0 1px 4px rgba(0,0,0,.12)}
   .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
   .nav-links a:hover{opacity:.65}
   .nav-right{display:flex;align-items:center;gap:14px}
@@ -47,7 +48,7 @@
   .viewtoggle{display:flex;gap:8px;align-items:center}
   .toggle-group{display:flex;background:var(--gray-100);border-radius:999px;padding:4px}
   .toggle-group button{border:none;background:none;padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gray-500)}
-  .toggle-group button.on{background:var(--lime);color:var(--ink)}
+  .toggle-group button.on{background:var(--lime);color:#fff}
   .searchbar{display:flex;align-items:center;gap:12px;border:1.5px solid var(--gray-300);border-radius:999px;padding:6px 6px 6px 20px;max-width:720px}
   .searchbar svg{opacity:.5;flex:0 0 auto}
   .searchbar input{flex:1;border:none;outline:none;font-size:16px;font-family:inherit;background:none}
@@ -57,7 +58,7 @@
 
   /* Active chips */
   .active-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;grid-column:1/-1}
-  .achip{background:var(--lime);color:var(--ink);font-weight:700;font-size:13px;padding:7px 12px;border-radius:999px;display:inline-flex;gap:7px;align-items:center;cursor:pointer}
+  .achip{background:var(--lime);color:#fff;font-weight:700;font-size:13px;padding:7px 12px;border-radius:999px;display:inline-flex;gap:7px;align-items:center;cursor:pointer}
   .achip .x{font-weight:900}
   .achip.clear{background:#fff;border:1px solid var(--gray-300);color:var(--gray-700)}
 
@@ -69,7 +70,7 @@
   .flabel{font-weight:700;font-size:14px;margin-bottom:12px;display:block}
   .op-toggle{display:flex;background:var(--gray-100);border-radius:999px;padding:4px}
   .op-toggle button{flex:1;border:none;background:none;padding:9px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gray-500)}
-  .op-toggle button.on{background:var(--lime);color:var(--ink)}
+  .op-toggle button.on{background:var(--lime);color:#fff}
   .switch{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-300);border-radius:12px;padding:12px 14px;cursor:pointer;font-size:14px;font-weight:600}
   .switch .track{width:42px;height:24px;background:var(--gray-300);border-radius:999px;position:relative;transition:.2s}
   .switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
@@ -87,7 +88,7 @@
   /* Results */
   .results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap}
   .results-head .count{font-weight:700;font-size:16px}
-  .results-head .count span{color:var(--lime);-webkit-text-stroke:.3px var(--gray-500)}
+  .results-head .count span{color:var(--lime)}
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .car-card{background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);transition:.2s;cursor:pointer;display:block}
   .car-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
@@ -95,7 +96,7 @@
   .car-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
   .car-card:hover .car-photo img{transform:scale(1.05)}
   .badge{position:absolute;top:12px;left:12px;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;z-index:2}
-  .badge.sale{background:var(--lime);color:var(--ink)}
+  .badge.sale{background:var(--lime);color:#fff}
   .badge.rent{background:var(--blue);color:#fff}
   .badge.verified{position:absolute;top:12px;right:12px;left:auto;background:#fff;color:var(--ink);border:1px solid var(--gray-300)}
   .car-body{padding:18px}
@@ -117,7 +118,7 @@
   .foot-brand p{font-size:14px;max-width:280px}
   .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
   .foot-col a{display:block;font-size:14px;margin-bottom:10px}
-  .foot-col a:hover{color:var(--lime)}
+  .foot-col a:hover{color:var(--royal-light)}
   .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
 
   .mobile-filter-btn{display:none}
@@ -143,7 +144,7 @@
 <!-- HEADER -->
 <header>
   <div class="wrap nav">
-    <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+    <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
     <nav class="nav-links">
       <a href="index.html#comprar">Comprar</a>
       <a href="index.html#alquilar">Alquilar</a>
@@ -312,7 +313,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+        <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 17.5a8 8 0 1 1 16 0" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><path d="M12 14.2 16.3 9.6" stroke="#1C3F9E" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="14.2" r="1.8" fill="#1C3F9E"/></svg></span>Cardash</a>
         <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
       </div>
       <div class="foot-col"><h4>Explorar</h4><a href="#">Autos en venta</a><a href="#">Autos en alquiler</a><a href="#">Por tipo</a><a href="#">Por estado</a></div>
