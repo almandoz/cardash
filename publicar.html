@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publica tu auto · Cardash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#C7FF02;--lime-dark:#a8d900;--ink:#0d0f0a;--gray-900:#1a1c17;
+    --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;
+    --white:#fff;--red:#e4443a;--blue:#2f6df0;--green:#1faa59;
+    --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.15);--maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--gray-100);line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 24px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:var(--ink)}
+  .btn-lime:hover{background:var(--lime-dark)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--gray-300)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+  /* Header */
+  header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:var(--ink)}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:var(--ink);display:grid;place-items:center;font-size:20px}
+  .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+  .nav-links a:hover{opacity:.65}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{font-weight:600;font-size:14px}
+  .menu-toggle{display:none;background:none;border:none;font-size:26px;cursor:pointer}
+
+  /* Intro */
+  .intro{padding:36px 0 8px;text-align:center}
+  .intro h1{font-size:clamp(28px,4vw,40px)}
+  .intro p{color:var(--gray-500);font-size:17px;margin-top:8px}
+
+  /* Progress */
+  .progress{display:flex;justify-content:center;gap:0;margin:28px 0 8px;flex-wrap:wrap}
+  .pstep{display:flex;align-items:center;gap:10px;color:var(--gray-500);font-size:14px;font-weight:600}
+  .pstep .dot{width:32px;height:32px;border-radius:50%;background:#fff;border:2px solid var(--gray-300);display:grid;place-items:center;font-weight:800;font-size:14px;transition:.2s}
+  .pstep.done .dot{background:var(--ink);border-color:var(--ink);color:var(--lime)}
+  .pstep.active .dot{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+  .pstep.active{color:var(--ink)}
+  .pline{width:36px;height:2px;background:var(--gray-300);margin:0 6px}
+  @media(max-width:720px){.pstep span{display:none}.pline{width:16px}}
+
+  /* Layout */
+  .form-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;padding:20px 0 64px;align-items:start}
+  .card{background:#fff;border-radius:var(--radius-lg);padding:32px;box-shadow:var(--shadow)}
+  .step{display:none}
+  .step.on{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .step h2{font-size:22px;margin-bottom:4px}
+  .step .sub{color:var(--gray-500);font-size:14px;margin-bottom:24px}
+
+  .field{margin-bottom:20px}
+  .field label{display:block;font-weight:700;font-size:14px;margin-bottom:8px}
+  .field .hint{font-weight:400;color:var(--gray-500);font-size:12px}
+  input[type=text],input[type=number],input[type=tel],input[type=email],select,textarea{
+    width:100%;border:1.5px solid var(--gray-300);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;background:#fff;outline:none;transition:border .15s}
+  input:focus,select:focus,textarea:focus{border-color:var(--ink)}
+  input.err,select.err{border-color:var(--red)}
+  textarea{resize:vertical;min-height:110px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:600px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .op-toggle{display:flex;background:var(--gray-100);border-radius:999px;padding:4px;max-width:320px}
+  .op-toggle button{flex:1;border:none;background:none;padding:11px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gray-500)}
+  .op-toggle button.on{background:var(--lime);color:var(--ink)}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{border:1.5px solid var(--gray-300);background:#fff;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;user-select:none}
+  .pill.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .switch{display:inline-flex;align-items:center;gap:12px;cursor:pointer;font-size:14px;font-weight:600}
+  .switch .track{width:44px;height:26px;background:var(--gray-300);border-radius:999px;position:relative;transition:.2s;flex:0 0 auto}
+  .switch .track::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s}
+  .switch.on .track{background:var(--green)}
+  .switch.on .track::after{left:21px}
+
+  /* price bs */
+  .bsline{margin-top:8px;font-size:14px;color:var(--gray-500)}
+  .bsline b{color:var(--ink)}
+
+  /* dropzone */
+  .dropzone{border:2px dashed var(--gray-300);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:.2s;background:var(--gray-100)}
+  .dropzone:hover,.dropzone.drag{border-color:var(--lime);background:#fbffe8}
+  .dropzone .big{font-size:36px}
+  .dropzone p{color:var(--gray-500);font-size:14px;margin-top:6px}
+  .dropzone b{color:var(--ink)}
+  .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .thumb{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--gray-100)}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb .rm{position:absolute;top:5px;right:5px;background:rgba(13,15,10,.75);color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-weight:700}
+  .thumb .cover{position:absolute;bottom:5px;left:5px;background:var(--lime);color:var(--ink);font-size:10px;font-weight:800;padding:3px 8px;border-radius:999px}
+
+  /* equip checkboxes */
+  .equip{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:600px){.equip{grid-template-columns:1fr}}
+  .chk{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;padding:8px 0}
+  .chk input{width:18px;height:18px;accent-color:var(--ink)}
+
+  .step-nav{display:flex;justify-content:space-between;margin-top:28px;gap:12px}
+
+  /* Preview */
+  .preview{position:sticky;top:92px}
+  .preview .lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);font-weight:700;margin-bottom:12px}
+  .pcard{background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+  .pphoto{height:180px;position:relative;background:var(--gray-100);display:grid;place-items:center;color:var(--gray-300);font-size:40px;overflow:hidden}
+  .pphoto img{width:100%;height:100%;object-fit:cover}
+  .pphoto .badge{position:absolute;top:12px;left:12px;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--lime);color:var(--ink)}
+  .pphoto .badge.rent{background:var(--blue);color:#fff}
+  .pbody{padding:18px}
+  .pprice{font-family:'Archivo';font-weight:900;font-size:23px}
+  .pprice small{font-family:'Inter';font-weight:600;font-size:13px;color:var(--gray-500)}
+  .pbs{font-size:13px;color:var(--gray-500)}
+  .pkind{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin:10px 0 3px}
+  .ptitle{font-weight:800;font-family:'Archivo';font-size:17px}
+  .ploc{color:var(--gray-500);font-size:13px;margin-top:3px}
+  .pspecs{display:flex;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-100);font-size:12px;color:var(--gray-700);flex-wrap:wrap}
+  .tip{background:var(--gray-100);border-radius:var(--radius);padding:14px;font-size:13px;color:var(--gray-700);margin-top:16px}
+  .tip b{color:var(--ink)}
+
+  /* Success */
+  .success{display:none;text-align:center;padding:56px 24px}
+  .success.on{display:block}
+  .success .ok{width:84px;height:84px;border-radius:50%;background:var(--lime);display:grid;place-items:center;font-size:44px;margin:0 auto 20px}
+  .success h2{font-size:30px}
+  .success p{color:var(--gray-500);font-size:16px;margin-top:8px}
+  .success .code{display:inline-block;background:var(--gray-100);border-radius:999px;padding:10px 20px;font-weight:800;font-family:'Archivo';margin-top:18px}
+  .success .acts{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+  /* Footer */
+  footer{background:var(--ink);color:rgba(255,255,255,.75);padding:56px 0 28px;margin-top:auto}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{color:#fff;margin-bottom:14px}
+  .foot-brand p{font-size:14px;max-width:280px}
+  .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;font-size:14px;margin-bottom:10px}
+  .foot-col a:hover{color:var(--lime)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
+
+  @media(max-width:900px){
+    .form-layout{grid-template-columns:1fr}
+    .preview{position:static;order:-1}
+  }
+  @media(max-width:640px){
+    .nav-links,.lang{display:none}
+    .menu-toggle{display:block}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+    <nav class="nav-links">
+      <a href="buscar.html">Comprar</a>
+      <a href="buscar.html">Alquilar</a>
+      <a href="index.html#tipos">Por tipo</a>
+      <a href="directorio.html">Directorio</a>
+    </nav>
+    <div class="nav-right">
+      <span class="lang">🌐 Español ▾</span>
+      <a class="btn btn-ghost" href="#">Entrar</a>
+      <a class="btn btn-dark" href="#">Registrarme</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<!-- INTRO -->
+<div class="wrap intro" id="intro">
+  <h1>Publica tu auto</h1>
+  <p>Gratis, en minutos. Llena los datos y lo verás aparecer en vivo a la derecha.</p>
+  <div class="progress" id="progress">
+    <div class="pstep active" data-s="1"><span class="dot">1</span><span>Vehículo</span></div>
+    <div class="pline"></div>
+    <div class="pstep" data-s="2"><span class="dot">2</span><span>Detalles</span></div>
+    <div class="pline"></div>
+    <div class="pstep" data-s="3"><span class="dot">3</span><span>Precio</span></div>
+    <div class="pline"></div>
+    <div class="pstep" data-s="4"><span class="dot">4</span><span>Fotos</span></div>
+    <div class="pline"></div>
+    <div class="pstep" data-s="5"><span class="dot">5</span><span>Ubicación</span></div>
+  </div>
+</div>
+
+<!-- FORM LAYOUT -->
+<div class="wrap form-layout" id="layout">
+  <div class="card">
+
+    <!-- STEP 1 -->
+    <div class="step on" data-step="1">
+      <h2>¿Qué vas a publicar?</h2>
+      <div class="sub">Empecemos por lo básico de tu vehículo.</div>
+      <div class="field">
+        <label>Tipo de operación</label>
+        <div class="op-toggle" id="op">
+          <button type="button" data-op="venta" class="on">En venta</button>
+          <button type="button" data-op="alquiler">En alquiler</button>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Tipo de vehículo *</label>
+          <select id="f_tipo">
+            <option value="">Selecciona...</option>
+            <option>Sedán</option><option>SUV</option><option>Pickup</option>
+            <option>Deportivo</option><option>Van</option><option>Moto</option>
+            <option>Camión</option><option>Eléctrico</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Marca *</label>
+          <select id="f_marca">
+            <option value="">Selecciona...</option>
+            <option>Toyota</option><option>Ford</option><option>Chevrolet</option>
+            <option>Hyundai</option><option>Kia</option><option>Nissan</option>
+            <option>Mitsubishi</option><option>Jeep</option><option>Otra</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Modelo *</label>
+          <input type="text" id="f_modelo" placeholder="Ej: 4Runner SR5">
+        </div>
+        <div class="field">
+          <label>Año *</label>
+          <select id="f_anio"><option value="">Selecciona...</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" data-step="2">
+      <h2>Detalles del vehículo</h2>
+      <div class="sub">Mientras más completo, más confianza genera tu publicación.</div>
+      <div class="grid2">
+        <div class="field">
+          <label>Kilometraje *</label>
+          <input type="number" id="f_km" placeholder="Ej: 28000" min="0">
+        </div>
+        <div class="field">
+          <label>Color</label>
+          <input type="text" id="f_color" placeholder="Ej: Blanco perlado">
+        </div>
+      </div>
+      <div class="field">
+        <label>Transmisión *</label>
+        <div class="pills" id="f_trans">
+          <span class="pill">Automático</span><span class="pill">Manual</span><span class="pill">CVT</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Combustible *</label>
+        <div class="pills" id="f_comb">
+          <span class="pill">Gasolina</span><span class="pill">Diésel</span>
+          <span class="pill">Híbrido</span><span class="pill">Eléctrico</span><span class="pill">GNV</span>
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label>Puestos</label>
+          <select id="f_puestos"><option value="">-</option><option>2</option><option>4</option><option>5</option><option>7</option><option>8</option></select>
+        </div>
+        <div class="field">
+          <label>Tracción</label>
+          <select id="f_traccion"><option value="">-</option><option>4x2</option><option>4x4</option><option>AWD</option></select>
+        </div>
+        <div class="field">
+          <label>Placa</label>
+          <select id="f_placa"><option value="">-</option><option>Terminal par</option><option>Terminal impar</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="switch" id="f_sinchoques"><span class="track"></span> Sin choques ni reparaciones estructurales</label>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" data-step="3">
+      <h2>Precio</h2>
+      <div class="sub">En Cardash los precios se publican en dólares.</div>
+      <div class="field">
+        <label>Precio en USD * <span class="hint" id="perlabel"></span></label>
+        <input type="number" id="f_precio" placeholder="Ej: 42000" min="0">
+        <div class="bsline">Equivale a <b id="bsval">Bs. 0</b> <span class="hint">(tasa referencial Bs. 725,75 / USD)</span></div>
+      </div>
+      <div class="field">
+        <label class="switch" id="f_negociable"><span class="track"></span> Precio negociable</label>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" data-step="4">
+      <h2>Fotos y descripción</h2>
+      <div class="sub">Las publicaciones con buenas fotos se venden hasta 3 veces más rápido.</div>
+      <div class="field">
+        <label>Fotos del auto *</label>
+        <div class="dropzone" id="dropzone">
+          <div class="big">📷</div>
+          <p><b>Arrastra tus fotos aquí</b> o haz clic para elegirlas</p>
+          <p class="hint">JPG o PNG · la primera será la portada</p>
+        </div>
+        <input type="file" id="fileinput" accept="image/*" multiple hidden>
+        <div class="thumbs" id="thumbs"></div>
+      </div>
+      <div class="field">
+        <label>Descripción</label>
+        <textarea id="f_desc" placeholder="Cuenta el estado del auto, mantenimientos, por qué lo vendes, extras..."></textarea>
+      </div>
+      <div class="field">
+        <label>Equipamiento</label>
+        <div class="equip" id="f_equip">
+          <label class="chk"><input type="checkbox">Aire acondicionado</label>
+          <label class="chk"><input type="checkbox">Cámara de reversa</label>
+          <label class="chk"><input type="checkbox">Sensores de estacionamiento</label>
+          <label class="chk"><input type="checkbox">Apple CarPlay / Android Auto</label>
+          <label class="chk"><input type="checkbox">Asientos de cuero</label>
+          <label class="chk"><input type="checkbox">Rines de aleación</label>
+          <label class="chk"><input type="checkbox">Control de crucero</label>
+          <label class="chk"><input type="checkbox">Bluetooth</label>
+          <label class="chk"><input type="checkbox">Techo solar</label>
+          <label class="chk"><input type="checkbox">Bluetooth / pantalla táctil</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step" data-step="5">
+      <h2>Ubicación y contacto</h2>
+      <div class="sub">Así los compradores sabrán dónde está y cómo contactarte.</div>
+      <div class="grid2">
+        <div class="field">
+          <label>Estado *</label>
+          <select id="f_estado">
+            <option value="">Selecciona...</option>
+            <option>Distrito Capital</option><option>Miranda</option><option>Carabobo</option>
+            <option>Zulia</option><option>Lara</option><option>Aragua</option>
+            <option>Monagas</option><option>Anzoátegui</option><option>Nueva Esparta</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ciudad / zona *</label>
+          <input type="text" id="f_ciudad" placeholder="Ej: Chacao · Caracas">
+        </div>
+      </div>
+      <div class="field">
+        <label>Nombre o agencia *</label>
+        <input type="text" id="f_vendedor" placeholder="Ej: Automotriz Andes">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>WhatsApp *</label>
+          <input type="tel" id="f_wa" placeholder="Ej: 0414 1234567">
+        </div>
+        <div class="field">
+          <label>Correo</label>
+          <input type="email" id="f_correo" placeholder="tucorreo@ejemplo.com">
+        </div>
+      </div>
+      <div class="tip">🛡️ <b>Tu información está protegida.</b> Nunca compartas datos bancarios ni recibas pagos antes de mostrar el auto en persona.</div>
+    </div>
+
+    <!-- NAV -->
+    <div class="step-nav">
+      <button class="btn btn-ghost" id="prev" style="visibility:hidden">← Anterior</button>
+      <button class="btn btn-lime" id="next">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW -->
+  <aside class="preview">
+    <div class="lbl">Vista previa en vivo</div>
+    <div class="pcard">
+      <div class="pphoto" id="p_photo"><span id="p_photo_ph">🚗</span><span class="badge" id="p_badge">En venta</span></div>
+      <div class="pbody">
+        <div class="pprice" id="p_price">$0</div>
+        <div class="pbs" id="p_bs">Bs. 0</div>
+        <div class="pkind" id="p_kind">Tipo</div>
+        <div class="ptitle" id="p_title">Tu auto</div>
+        <div class="ploc" id="p_loc">📍 Ubicación</div>
+        <div class="pspecs" id="p_specs"><span>🛣️ - km</span><span>⚙️ -</span><span>⛽ -</span></div>
+      </div>
+    </div>
+    <div class="tip">💡 <b>Consejo:</b> completa todos los campos con * para publicar. La vista previa muestra cómo verán tu auto los compradores.</div>
+  </aside>
+</div>
+
+<!-- SUCCESS -->
+<div class="wrap success" id="success">
+  <div class="ok">✅</div>
+  <h2>¡Tu auto fue publicado!</h2>
+  <p>Ya está visible para miles de compradores en Cardash.</p>
+  <div class="code" id="dashcode">Dashcode: CD-0000</div>
+  <div class="acts">
+    <a class="btn btn-lime" href="auto.html">Ver mi publicación</a>
+    <a class="btn btn-ghost" href="publicar.html">Publicar otro auto</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+        <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
+      </div>
+      <div class="foot-col"><h4>Explorar</h4><a href="buscar.html">Autos en venta</a><a href="buscar.html">Autos en alquiler</a><a href="index.html#tipos">Por tipo</a><a href="#">Por estado</a></div>
+      <div class="foot-col"><h4>Cardash</h4><a href="publicar.html">Publicar gratis</a><a href="directorio.html">Directorio</a><a href="#">Guías</a><a href="#">Nosotros</a></div>
+      <div class="foot-col"><h4>Recursos</h4><a href="#">Ayuda</a><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Contacto</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Cardash. Todos los derechos reservados.</span>
+      <span>Hecho en Venezuela 🇻🇪</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const TASA = 725.75;
+  const fmt = n => (n||0).toLocaleString('es-VE');
+  const data = {op:"venta", tipo:"", marca:"", modelo:"", anio:"", km:"", color:"", trans:"", comb:"",
+                puestos:"", traccion:"", placa:"", sinchoques:false, precio:"", negociable:false,
+                fotos:[], desc:"", estado:"", ciudad:"", vendedor:"", wa:"", correo:""};
+
+  // Poblar años
+  const anioSel=document.getElementById('f_anio');
+  for(let y=2026;y>=1995;y--){const o=document.createElement('option');o.textContent=y;anioSel.appendChild(o);}
+
+  let step=1; const TOTAL=5;
+
+  function showStep(n){
+    document.querySelectorAll('.step').forEach(s=>s.classList.toggle('on', +s.dataset.step===n));
+    document.querySelectorAll('.pstep').forEach(p=>{
+      const s=+p.dataset.s;
+      p.classList.toggle('active', s===n);
+      p.classList.toggle('done', s<n);
+    });
+    document.getElementById('prev').style.visibility = n===1 ? 'hidden':'visible';
+    document.getElementById('next').textContent = n===TOTAL ? '✓ Publicar auto' : 'Siguiente →';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Preview
+  function updatePreview(){
+    document.getElementById('p_badge').textContent = data.op==="alquiler"?"En alquiler":"En venta";
+    document.getElementById('p_badge').className = "badge"+(data.op==="alquiler"?" rent":"");
+    const suf = data.op==="alquiler"?" / día":"";
+    document.getElementById('p_price').innerHTML = data.precio?("$"+fmt(+data.precio)+(suf?`<small>${suf}</small>`:"")):"$0";
+    document.getElementById('p_bs').textContent = "Bs. "+fmt(Math.round((+data.precio||0)*TASA))+(data.op==="alquiler"?" / día":"");
+    document.getElementById('p_kind').textContent = data.tipo || "Tipo";
+    document.getElementById('p_title').textContent = (data.marca||data.modelo)?`${data.marca} ${data.modelo} ${data.anio}`.trim():"Tu auto";
+    document.getElementById('p_loc').textContent = "📍 "+(data.ciudad||"Ubicación");
+    document.getElementById('p_specs').innerHTML =
+      `<span>🛣️ ${data.km?fmt(+data.km):"-"} km</span><span>⚙️ ${data.trans||"-"}</span><span>⛽ ${data.comb||"-"}</span>`;
+    // foto portada
+    const ph=document.getElementById('p_photo'); const phEl=document.getElementById('p_photo_ph');
+    let img=ph.querySelector('img');
+    if(data.fotos.length){
+      if(!img){img=document.createElement('img');ph.insertBefore(img, phEl);}
+      img.src=data.fotos[0]; phEl.style.display='none';
+    } else { if(img) img.remove(); phEl.style.display='block'; }
+  }
+
+  // Precio Bs
+  const precioIn=document.getElementById('f_precio');
+  precioIn.oninput=()=>{data.precio=precioIn.value; document.getElementById('bsval').textContent="Bs. "+fmt(Math.round((+data.precio||0)*TASA)); document.getElementById('perlabel').textContent=data.op==="alquiler"?"(por día)":""; updatePreview();};
+
+  // Operación
+  document.querySelectorAll('#op button').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#op button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+    data.op=b.dataset.op; document.getElementById('perlabel').textContent=data.op==="alquiler"?"(por día)":""; updatePreview();
+  });
+
+  // Selects & inputs simples
+  const bind=(id,key)=>{const el=document.getElementById(id); el.oninput=el.onchange=()=>{data[key]=el.value; el.classList.remove('err'); updatePreview();};};
+  bind('f_tipo','tipo');bind('f_marca','marca');bind('f_modelo','modelo');bind('f_anio','anio');
+  bind('f_km','km');bind('f_color','color');bind('f_puestos','puestos');bind('f_traccion','traccion');
+  bind('f_placa','placa');bind('f_desc','desc');bind('f_estado','estado');bind('f_ciudad','ciudad');
+  bind('f_vendedor','vendedor');bind('f_wa','wa');bind('f_correo','correo');
+
+  // Pills (transmisión y combustible = selección única)
+  function pillGroup(id,key){
+    document.querySelectorAll('#'+id+' .pill').forEach(p=>p.onclick=()=>{
+      document.querySelectorAll('#'+id+' .pill').forEach(x=>x.classList.remove('on'));
+      p.classList.add('on'); data[key]=p.textContent; updatePreview();
+    });
+  }
+  pillGroup('f_trans','trans'); pillGroup('f_comb','comb');
+
+  // Switches
+  document.getElementById('f_sinchoques').onclick=function(){this.classList.toggle('on');data.sinchoques=this.classList.contains('on');};
+  document.getElementById('f_negociable').onclick=function(){this.classList.toggle('on');data.negociable=this.classList.contains('on');};
+
+  // Fotos
+  const dz=document.getElementById('dropzone'), fi=document.getElementById('fileinput'), thumbs=document.getElementById('thumbs');
+  dz.onclick=()=>fi.click();
+  dz.ondragover=e=>{e.preventDefault();dz.classList.add('drag');};
+  dz.ondragleave=()=>dz.classList.remove('drag');
+  dz.ondrop=e=>{e.preventDefault();dz.classList.remove('drag');addFiles(e.dataTransfer.files);};
+  fi.onchange=()=>addFiles(fi.files);
+  function addFiles(files){
+    [...files].forEach(f=>{ if(f.type.startsWith('image/')) data.fotos.push(URL.createObjectURL(f)); });
+    renderThumbs(); updatePreview();
+  }
+  function renderThumbs(){
+    thumbs.innerHTML = data.fotos.map((src,i)=>
+      `<div class="thumb"><img src="${src}">${i===0?'<span class="cover">Portada</span>':''}<button class="rm" data-i="${i}">×</button></div>`).join("");
+    thumbs.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{data.fotos.splice(+b.dataset.i,1);renderThumbs();updatePreview();});
+  }
+
+  // Validación por paso
+  function validate(n){
+    let ok=true;
+    const req={
+      1:[['f_tipo','tipo'],['f_marca','marca'],['f_modelo','modelo'],['f_anio','anio']],
+      2:[['f_km','km']],
+      3:[['f_precio','precio']],
+      5:[['f_estado','estado'],['f_ciudad','ciudad'],['f_vendedor','vendedor'],['f_wa','wa']]
+    }[n]||[];
+    req.forEach(([id,key])=>{ const el=document.getElementById(id); if(!data[key]){el.classList.add('err');ok=false;} else el.classList.remove('err'); });
+    if(n===2 && !data.trans){ ok=false; alert('Selecciona la transmisión'); }
+    if(n===2 && ok && !data.comb){ ok=false; alert('Selecciona el combustible'); }
+    if(n===4 && data.fotos.length===0){ ok=false; alert('Agrega al menos una foto de tu auto'); }
+    if(!ok && n!==2 && n!==4) { /* campos marcados en rojo */ }
+    return ok;
+  }
+
+  document.getElementById('next').onclick=()=>{
+    if(!validate(step)) return;
+    if(step===TOTAL){ publish(); return; }
+    step++; showStep(step);
+  };
+  document.getElementById('prev').onclick=()=>{ if(step>1){step--;showStep(step);} };
+
+  function publish(){
+    const code = "CD-"+String(Math.floor(Math.random()*9000)+1000);
+    document.getElementById('layout').style.display='none';
+    document.getElementById('intro').style.display='none';
+    const s=document.getElementById('success'); s.classList.add('on');
+    document.getElementById('dashcode').textContent="Dashcode: "+code;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  updatePreview();
+</script>
+</body>
+</html>

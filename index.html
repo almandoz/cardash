@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardash · Autos en Venezuela: Compra, Vende y Alquila</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#C7FF02;
+    --lime-dark:#a8d900;
+    --ink:#0d0f0a;
+    --ink-soft:#15170f;
+    --gray-900:#1a1c17;
+    --gray-700:#3a3d33;
+    --gray-500:#6b6f62;
+    --gray-300:#c9ccc0;
+    --gray-100:#f2f3ee;
+    --white:#ffffff;
+    --red:#e4443a;
+    --radius:16px;
+    --radius-lg:24px;
+    --shadow:0 8px 30px rgba(0,0,0,.08);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.15);
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-weight:700;font-size:15px;
+    padding:12px 22px;border-radius:999px;border:none;cursor:pointer;
+    transition:transform .15s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:var(--ink)}
+  .btn-lime:hover{background:var(--lime-dark)}
+  .btn-dark{background:var(--ink);color:var(--white)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid rgba(0,0,0,.15)}
+  .btn-outline-light{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.4)}
+
+  /* ---------- Header ---------- */
+  header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:var(--ink)}
+  .brand .logo{
+    width:34px;height:34px;border-radius:9px;background:var(--ink);
+    display:grid;place-items:center;color:var(--lime);font-size:20px;
+  }
+  .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+  .nav-links a:hover{opacity:.65}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .pill-aid{background:var(--red);color:#fff;padding:9px 16px;border-radius:999px;font-weight:700;font-size:14px;display:inline-flex;gap:7px;align-items:center}
+  .lang{font-weight:600;font-size:14px;display:flex;align-items:center;gap:5px}
+  .menu-toggle{display:none;background:none;border:none;font-size:26px;cursor:pointer}
+
+  /* ---------- Alert band ---------- */
+  .alert{background:var(--red);color:#fff}
+  .alert .wrap{display:flex;align-items:center;gap:20px;padding:14px 24px;flex-wrap:wrap}
+  .alert-text strong{display:block;font-weight:800;font-size:15px}
+  .alert-text span{font-size:13px;opacity:.9}
+  .alert-links{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}
+  .alert-chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600}
+  .alert-chip.solid{background:#fff;color:var(--red)}
+  .alert-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;opacity:.8}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;color:#fff;text-align:center;
+    padding:120px 24px 130px;
+    background:
+      linear-gradient(180deg, rgba(10,12,8,.55) 0%, rgba(10,12,8,.35) 40%, rgba(10,12,8,.75) 100%),
+      radial-gradient(120% 90% at 50% 0%, #2b3320 0%, #10130b 55%, #050603 100%);
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;opacity:.25;pointer-events:none;
+    background:
+      radial-gradient(60% 40% at 80% 20%, rgba(199,255,2,.25), transparent 70%),
+      radial-gradient(50% 50% at 15% 80%, rgba(199,255,2,.12), transparent 70%);
+  }
+  .hero-inner{position:relative;z-index:2;max-width:900px;margin:0 auto}
+  .hero h1{font-size:clamp(42px,7vw,76px);margin-bottom:18px}
+  .hero p{font-size:clamp(17px,2.2vw,22px);color:rgba(255,255,255,.85);margin-bottom:38px}
+  .search{
+    background:rgba(20,22,16,.72);backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:999px;padding:8px 8px 8px 22px;
+    display:flex;align-items:center;gap:12px;max-width:720px;margin:0 auto;
+  }
+  .search svg{flex:0 0 auto;opacity:.7}
+  .search input{
+    flex:1;background:none;border:none;outline:none;color:#fff;font-size:16px;
+    font-family:inherit;
+  }
+  .search input::placeholder{color:rgba(255,255,255,.5)}
+  .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .chip{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    color:#fff;padding:9px 16px;border-radius:999px;font-size:14px;font-weight:600;
+    cursor:pointer;transition:.2s;
+  }
+  .chip:hover{background:rgba(255,255,255,.16)}
+  .chip.active{background:rgba(199,255,2,.15);border-color:var(--lime);color:var(--lime)}
+
+  /* ---------- Stats ---------- */
+  .stats{background:var(--ink);color:#fff}
+  .stats .wrap{display:flex;justify-content:center;gap:70px;padding:40px 24px;flex-wrap:wrap;text-align:center}
+  .stat .num{font-family:'Archivo',sans-serif;font-weight:900;font-size:44px;color:var(--lime)}
+  .stat .label{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:4px}
+
+  /* ---------- Section shell ---------- */
+  section.block{padding:80px 0}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px;gap:20px;flex-wrap:wrap}
+  .sec-head h2{font-size:clamp(28px,4vw,40px)}
+  .sec-head p{color:var(--gray-500);font-size:16px;margin-top:8px}
+  .sec-head .link{font-weight:700;color:var(--ink);border-bottom:2px solid var(--lime);padding-bottom:2px}
+
+  /* ---------- Vehicle types ---------- */
+  .types{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .type-card{
+    background:var(--gray-100);border-radius:var(--radius);padding:26px 20px;
+    text-align:center;transition:.2s;cursor:pointer;border:1px solid transparent;
+  }
+  .type-card:hover{background:var(--lime);transform:translateY(-4px);border-color:var(--lime-dark)}
+  .type-card .ico{font-size:34px;margin-bottom:12px}
+  .type-card .name{font-weight:700;font-size:16px}
+
+  /* ---------- Featured cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .car-card{
+    background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius-lg);
+    overflow:hidden;box-shadow:var(--shadow);transition:.2s;
+  }
+  .car-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .car-photo{
+    height:200px;position:relative;overflow:hidden;
+    display:flex;align-items:flex-start;justify-content:space-between;padding:14px;
+  }
+  .car-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .4s ease}
+  .car-card:hover .car-img{transform:scale(1.05)}
+  .badge{position:relative;z-index:2;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px}
+  .badge.sale{background:var(--lime);color:var(--ink)}
+  .badge.rent{background:#2f6df0}
+  .badge.verified{background:#fff;color:var(--ink);border:1px solid var(--gray-300)}
+  .car-body{padding:20px}
+  .car-price{font-family:'Archivo',sans-serif;font-weight:900;font-size:26px}
+  .car-price small{display:block;font-family:'Inter';font-weight:600;font-size:13px;color:var(--gray-500);margin-top:2px}
+  .car-kind{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin:12px 0 4px}
+  .car-title{font-weight:800;font-size:18px;font-family:'Archivo'}
+  .car-loc{color:var(--gray-500);font-size:14px;margin-top:4px}
+  .car-specs{display:flex;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-100);font-size:13px;color:var(--gray-700);flex-wrap:wrap}
+  .car-specs span{display:flex;align-items:center;gap:5px}
+  .car-agency{display:flex;align-items:center;gap:10px;margin-top:16px}
+  .car-agency .av{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-weight:800;font-size:13px}
+  .car-agency .an{font-size:13px;font-weight:600;color:var(--gray-700)}
+
+  /* photo gradients per type */
+  .g1{background:linear-gradient(135deg,#3a3d33,#15170f)}
+  .g2{background:linear-gradient(135deg,#2b3320,#0d0f0a)}
+  .g3{background:linear-gradient(135deg,#4a4436,#1a1c17)}
+  .g4{background:linear-gradient(135deg,#233,#0a1418)}
+  .g5{background:linear-gradient(135deg,#3d2f2f,#170f0f)}
+  .g6{background:linear-gradient(135deg,#2f3a3d,#0f1617)}
+
+  /* ---------- What to do ---------- */
+  .todo{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .todo-card{border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:28px;transition:.2s;background:#fff}
+  .todo-card:hover{border-color:var(--ink);box-shadow:var(--shadow)}
+  .todo-card .ico{width:48px;height:48px;border-radius:12px;background:var(--lime);display:grid;place-items:center;font-size:24px;margin-bottom:16px}
+  .todo-card h3{font-size:19px;margin-bottom:8px}
+  .todo-card p{color:var(--gray-500);font-size:14px;margin-bottom:16px}
+  .todo-card a{font-weight:700;font-size:14px;border-bottom:2px solid var(--lime);padding-bottom:2px}
+
+  /* ---------- Why ---------- */
+  .why{background:var(--ink);color:#fff}
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px}
+  .why-item .ico{font-size:30px;margin-bottom:14px}
+  .why-item h3{font-size:20px;margin-bottom:8px;color:var(--lime)}
+  .why-item p{color:rgba(255,255,255,.7);font-size:15px}
+
+  /* ---------- Grow banner ---------- */
+  .grow{background:var(--lime);border-radius:var(--radius-lg);padding:56px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .grow h2{font-size:clamp(26px,3.5vw,38px);max-width:560px}
+  .grow p{color:rgba(0,0,0,.7);margin-top:12px;max-width:520px;font-size:16px}
+
+  /* ---------- Guides ---------- */
+  .guides{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .guide{border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;transition:.2s;background:#fff}
+  .guide:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .guide .top{height:120px;display:grid;place-items:center;font-size:44px}
+  .guide .gb{padding:22px}
+  .guide h3{font-size:18px;margin-bottom:8px}
+  .guide p{color:var(--gray-500);font-size:14px;margin-bottom:14px}
+  .guide a{font-weight:700;font-size:14px;border-bottom:2px solid var(--lime);padding-bottom:2px}
+
+  /* ---------- Directory ---------- */
+  .dir{background:var(--gray-100);border-radius:var(--radius-lg);padding:44px;text-align:center}
+  .dir h2{font-size:clamp(24px,3vw,34px)}
+  .dir p{color:var(--gray-500);margin:12px auto 26px;max-width:560px}
+  .dir-tags{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .dir-tag{background:#fff;border:1px solid var(--gray-300);padding:10px 20px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;transition:.2s}
+  .dir-tag:hover{background:var(--ink);color:#fff}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--ink);color:rgba(255,255,255,.75);padding:64px 0 32px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{color:#fff;margin-bottom:14px}
+  .foot-brand p{font-size:14px;max-width:280px}
+  .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;font-size:14px;margin-bottom:10px}
+  .foot-col a:hover{color:var(--lime)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:48px;padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:960px){
+    .types,.todo{grid-template-columns:repeat(2,1fr)}
+    .cards,.guides,.why-grid{grid-template-columns:1fr 1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:640px){
+    .nav-links,.pill-aid,.lang{display:none}
+    .menu-toggle{display:block}
+    .cards,.guides,.why-grid,.foot-grid,.types,.todo{grid-template-columns:1fr}
+    .stats .wrap{gap:32px}
+    .grow{padding:36px 24px}
+    .alert-links{margin-left:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#"><span class="logo">🚗</span>Cardash</a>
+    <nav class="nav-links">
+      <a href="buscar.html">Comprar</a>
+      <a href="buscar.html">Alquilar</a>
+      <a href="#tipos">Por tipo</a>
+      <a href="directorio.html">Directorio</a>
+    </nav>
+    <div class="nav-right">
+      <a class="pill-aid" href="#">💚 Red de Ayuda</a>
+      <span class="lang">🌐 Español ▾</span>
+      <a class="btn btn-ghost" href="#">Entrar</a>
+      <a class="btn btn-dark" href="#">Registrarme</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<!-- ============ ALERT BAND ============ -->
+<div class="alert" id="alert">
+  <div class="wrap">
+    <div class="alert-text">
+      <strong>Compra con confianza</strong>
+      <span>Autos verificados, historial claro y vendedores reales.</span>
+    </div>
+    <div class="alert-links">
+      <a class="alert-chip solid" href="#">Ver garantías</a>
+      <a class="alert-chip" href="#">Reporte de historial</a>
+      <a class="alert-chip" href="#">Inspección técnica</a>
+    </div>
+    <button class="alert-close" onclick="document.getElementById('alert').remove()" aria-label="Cerrar">×</button>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Encuentra tu próximo auto</h1>
+    <p>Sedanes, SUVs, pickups y más, de los mejores vendedores del país</p>
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" placeholder="Marca, modelo, ciudad o dashcode...">
+      <a class="btn btn-lime" href="buscar.html">Explorar</a>
+    </div>
+    <div class="chips">
+      <button class="chip active">✓ Sin choques</button>
+      <button class="chip">Sedanes en venta</button>
+      <button class="chip">SUVs en venta</button>
+      <button class="chip">Pickups en venta</button>
+      <button class="chip">Autos en alquiler</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><div class="num">2.077</div><div class="label">Autos activos</div></div>
+    <div class="stat"><div class="num">302</div><div class="label">Modelos</div></div>
+    <div class="stat"><div class="num">15</div><div class="label">Estados</div></div>
+  </div>
+</div>
+
+<!-- ============ VEHICLE TYPES ============ -->
+<section class="block" id="tipos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Explora por tipo de vehículo</h2>
+        <p>Encuentra exactamente lo que buscas</p>
+      </div>
+      <a class="link" href="#">Ver todos</a>
+    </div>
+    <div class="types">
+      <div class="type-card"><div class="ico">🚗</div><div class="name">Sedanes</div></div>
+      <div class="type-card"><div class="ico">🚙</div><div class="name">SUVs</div></div>
+      <div class="type-card"><div class="ico">🛻</div><div class="name">Pickups</div></div>
+      <div class="type-card"><div class="ico">🏎️</div><div class="name">Deportivos</div></div>
+      <div class="type-card"><div class="ico">🚐</div><div class="name">Vans</div></div>
+      <div class="type-card"><div class="ico">🏍️</div><div class="name">Motos</div></div>
+      <div class="type-card"><div class="ico">🚚</div><div class="name">Camiones</div></div>
+      <div class="type-card"><div class="ico">⚡</div><div class="name">Eléctricos</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED ============ -->
+<section class="block" style="padding-top:0" id="comprar">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Autos destacados</h2>
+        <p>Una selección de vehículos destacados en la portada</p>
+      </div>
+      <a class="link" href="#">Ver todos</a>
+    </div>
+    <div class="cards">
+
+      <div class="car-card">
+        <div class="car-photo g1"><img class="car-img" src="img/4runner.jpg" alt="Toyota 4Runner" loading="lazy"><span class="badge sale">En venta</span></div>
+        <div class="car-body">
+          <div class="car-price">$42.000<small>Bs. 30.481.374</small></div>
+          <div class="car-kind">SUV</div>
+          <div class="car-title">Toyota 4Runner 2022</div>
+          <div class="car-loc">Chacao · Caracas · Distrito Capital</div>
+          <div class="car-specs"><span>🛣️ 28.000 km</span><span>⚙️ Automático</span><span>⛽ Gasolina</span></div>
+          <div class="car-agency"><span class="av">A</span><span class="an">Automotriz Andes</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-photo g2"><img class="car-img" src="img/hilux.jpg" alt="Toyota Hilux" loading="lazy"><span class="badge sale">En venta</span></div>
+        <div class="car-body">
+          <div class="car-price">$38.500<small>Bs. 27.941.259</small></div>
+          <div class="car-kind">Pickup</div>
+          <div class="car-title">Toyota Hilux 2023</div>
+          <div class="car-loc">Los Palos Grandes · Caracas · Miranda</div>
+          <div class="car-specs"><span>🛣️ 34.000 km</span><span>⚙️ Automático</span><span>⛽ Diésel</span></div>
+          <div class="car-agency"><span class="av">M</span><span class="an">Motorcenter VE</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-photo g3"><img class="car-img" src="img/corolla.jpg" alt="Toyota Corolla" loading="lazy"><span class="badge sale">En venta</span></div>
+        <div class="car-body">
+          <div class="car-price">$24.900<small>Bs. 18.071.100</small></div>
+          <div class="car-kind">Sedán</div>
+          <div class="car-title">Toyota Corolla 2021</div>
+          <div class="car-loc">Valencia · Carabobo</div>
+          <div class="car-specs"><span>🛣️ 52.000 km</span><span>⚙️ CVT</span><span>⛽ Gasolina</span></div>
+          <div class="car-agency"><span class="av">C</span><span class="an">Carabobo Autos</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-photo g4"><img class="car-img" src="img/prado.jpg" alt="Toyota Land Cruiser Prado" loading="lazy"><span class="badge verified">Verificado</span></div>
+        <div class="car-body">
+          <div class="car-price">$65.000<small>Bs. 47.173.615</small></div>
+          <div class="car-kind">SUV</div>
+          <div class="car-title">Toyota Land Cruiser Prado 2022</div>
+          <div class="car-loc">La Castellana · Caracas · Distrito Capital</div>
+          <div class="car-specs"><span>🛣️ 19.000 km</span><span>⚙️ Automático</span><span>⛽ Diésel</span></div>
+          <div class="car-agency"><span class="av">T</span><span class="an">Toyoval</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-photo g5"><img class="car-img" src="img/fortuner.jpg" alt="Toyota Fortuner" loading="lazy"><span class="badge sale">En venta</span></div>
+        <div class="car-body">
+          <div class="car-price">$45.900<small>Bs. 33.311.786</small></div>
+          <div class="car-kind">SUV</div>
+          <div class="car-title">Toyota Fortuner 2023</div>
+          <div class="car-loc">Las Mercedes · Caracas · Miranda</div>
+          <div class="car-specs"><span>🛣️ 22.000 km</span><span>⚙️ Automático</span><span>⛽ Diésel</span></div>
+          <div class="car-agency"><span class="av">M</span><span class="an">Motofalca</span></div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-photo g6"><img class="car-img" src="img/corolla-cross.webp" alt="Toyota Corolla Cross" loading="lazy"><span class="badge rent">En alquiler</span></div>
+        <div class="car-body">
+          <div class="car-price">$70<small>Bs. 50.802 / día</small></div>
+          <div class="car-kind">SUV</div>
+          <div class="car-title">Toyota Corolla Cross 2024</div>
+          <div class="car-loc">Maracaibo · Zulia</div>
+          <div class="car-specs"><span>🛣️ 15.000 km</span><span>⚙️ CVT</span><span>⛽ Híbrido</span></div>
+          <div class="car-agency"><span class="av">Z</span><span class="an">Zulia Motors</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT TO DO ============ -->
+<section class="block" style="background:var(--gray-100)" id="alquilar">
+  <div class="wrap">
+    <div class="sec-head"><div><h2>¿Qué quieres hacer?</h2></div></div>
+    <div class="todo">
+      <div class="todo-card">
+        <div class="ico">🔑</div>
+        <h3>Comprar</h3>
+        <p>Explora sedanes, SUVs, pickups y más a la venta en todo el país.</p>
+        <a href="#">Ver autos en venta →</a>
+      </div>
+      <div class="todo-card">
+        <div class="ico">📅</div>
+        <h3>Alquilar</h3>
+        <p>Encuentra tu próximo auto por días, semanas o meses.</p>
+        <a href="#">Ver autos en alquiler →</a>
+      </div>
+      <div class="todo-card">
+        <div class="ico">💰</div>
+        <h3>Vende tu auto</h3>
+        <p>Publica gratis en minutos con nuestro formulario inteligente.</p>
+        <a href="publicar.html">Publicar gratis →</a>
+      </div>
+      <div class="todo-card">
+        <div class="ico">🧰</div>
+        <h3>¿Necesitas un pro?</h3>
+        <p>Talleres, aseguradoras, peritos y financiamiento verificados.</p>
+        <a href="directorio.html">Ver directorio →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="block why">
+  <div class="wrap">
+    <div class="sec-head"><div><h2 style="color:#fff">Por qué Cardash</h2></div></div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="ico">✅</div>
+        <h3>Publicaciones verificadas</h3>
+        <p>Autos publicados por vendedores y agencias reales, no anuncios anónimos.</p>
+      </div>
+      <div class="why-item">
+        <div class="ico">📸</div>
+        <h3>Fotos protegidas</h3>
+        <p>Cada imagen lleva marca de agua para proteger el trabajo de quien publica.</p>
+      </div>
+      <div class="why-item">
+        <div class="ico">📋</div>
+        <h3>Historial real</h3>
+        <p>Kilometraje, dueños anteriores y reportes de choques a la vista.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GROW ============ -->
+<section class="block">
+  <div class="wrap">
+    <div class="grow">
+      <div>
+        <h2>Haz crecer tu negocio automotriz</h2>
+        <p>Publica tus autos gratis, gestiona tus consultas y conecta con compradores en todo el país.</p>
+      </div>
+      <a class="btn btn-dark" href="#">Registrarme como vendedor</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GUIDES ============ -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Guías para comprar y vender</h2>
+        <p>Consejos prácticos para moverte con confianza en el mercado</p>
+      </div>
+      <a class="link" href="#">Ver todas las guías</a>
+    </div>
+    <div class="guides">
+      <div class="guide">
+        <div class="top g2">🚗</div>
+        <div class="gb">
+          <h3>Cómo comprar un auto usado</h3>
+          <p>Qué revisar, documentos y costos para comprar con confianza.</p>
+          <a href="#">Leer más →</a>
+        </div>
+      </div>
+      <div class="guide">
+        <div class="top g3">💵</div>
+        <div class="gb">
+          <h3>Cómo vender tu auto</h3>
+          <p>Prepara tus papeles, fija el precio en USD y publica gratis.</p>
+          <a href="#">Leer más →</a>
+        </div>
+      </div>
+      <div class="guide">
+        <div class="top g4">🛡️</div>
+        <div class="gb">
+          <h3>Traspaso y documentos</h3>
+          <p>Título, notaría, INTT y seguros explicados paso a paso.</p>
+          <a href="#">Leer más →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIRECTORY ============ -->
+<section class="block" style="padding-top:0" id="directorio">
+  <div class="wrap">
+    <div class="dir">
+      <h2>¿Necesitas un profesional?</h2>
+      <p>Agencias, vendedores, talleres, peritos, aseguradoras y financiamiento verificados en todo el país.</p>
+      <div class="dir-tags">
+        <span class="dir-tag">Agencias</span>
+        <span class="dir-tag">Vendedores</span>
+        <span class="dir-tag">Talleres</span>
+        <span class="dir-tag">Peritos</span>
+        <span class="dir-tag">Aseguradoras</span>
+        <span class="dir-tag">Financiamiento</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#"><span class="logo">🚗</span>Cardash</a>
+        <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Explorar</h4>
+        <a href="#">Autos en venta</a>
+        <a href="#">Autos en alquiler</a>
+        <a href="#">Por tipo</a>
+        <a href="#">Por estado</a>
+      </div>
+      <div class="foot-col">
+        <h4>Cardash</h4>
+        <a href="publicar.html">Publicar gratis</a>
+        <a href="directorio.html">Directorio</a>
+        <a href="#">Guías</a>
+        <a href="#">Nosotros</a>
+      </div>
+      <div class="foot-col">
+        <h4>Recursos</h4>
+        <a href="#">Ayuda</a>
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Contacto</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Cardash. Todos los derechos reservados.</span>
+      <span>Hecho en Venezuela 🇻🇪</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Chips activables (demo)
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+
+  // Cada card de auto abre su ficha individual
+  document.querySelectorAll('.car-card').forEach(card=>{
+    card.style.cursor='pointer';
+    card.addEventListener('click',()=>{ window.location.href='auto.html'; });
+  });
+</script>
+</body>
+</html>

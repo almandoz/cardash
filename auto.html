@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toyota 4Runner 2022 · Cardash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#C7FF02;--lime-dark:#a8d900;--ink:#0d0f0a;--gray-900:#1a1c17;
+    --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;
+    --white:#fff;--red:#e4443a;--green:#1faa59;--blue:#2f6df0;
+    --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.15);--maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--white);line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.display{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:var(--ink)}
+  .btn-lime:hover{background:var(--lime-dark)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-wa{background:var(--green);color:#fff}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--gray-300)}
+  .btn-block{width:100%}
+
+  /* Header */
+  header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:var(--ink)}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:var(--ink);display:grid;place-items:center;font-size:20px}
+  .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+  .nav-links a:hover{opacity:.65}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{font-weight:600;font-size:14px}
+  .menu-toggle{display:none;background:none;border:none;font-size:26px;cursor:pointer}
+
+  /* Breadcrumb */
+  .crumb{background:var(--gray-100);font-size:13px;color:var(--gray-500)}
+  .crumb .wrap{padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .crumb a:hover{color:var(--ink)}
+  .crumb .sep{opacity:.5}
+  .crumb .cur{color:var(--ink);font-weight:600}
+
+  /* Layout */
+  .detail{display:grid;grid-template-columns:1fr 380px;gap:40px;padding:32px 0 64px;align-items:start}
+
+  /* Gallery */
+  .gallery .main{position:relative;border-radius:var(--radius-lg);overflow:hidden;background:var(--gray-100);aspect-ratio:16/10}
+  .gallery .main img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+  .gallery .badges{position:absolute;top:16px;left:16px;display:flex;gap:8px;z-index:2}
+  .badge{background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px}
+  .badge.sale{background:var(--lime);color:var(--ink)}
+  .badge.verified{background:#fff;color:var(--ink);border:1px solid var(--gray-300)}
+  .gallery .count{position:absolute;bottom:16px;right:16px;background:rgba(13,15,10,.75);color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;backdrop-filter:blur(6px);z-index:2}
+  .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+  .thumb{border-radius:12px;overflow:hidden;aspect-ratio:4/3;cursor:pointer;border:2px solid transparent;background:var(--gray-100)}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb.active{border-color:var(--lime)}
+
+  /* Title block */
+  .titleblock{margin-top:32px}
+  .titleblock .kind{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-500);font-weight:700}
+  .titleblock h1{font-size:clamp(28px,4vw,40px);margin:6px 0 8px}
+  .titleblock .loc{color:var(--gray-500);font-size:16px;display:flex;align-items:center;gap:6px}
+
+  /* Key specs */
+  .keyspecs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+  .keyspec{background:var(--gray-100);border-radius:var(--radius);padding:18px;text-align:center}
+  .keyspec .ico{font-size:24px}
+  .keyspec .v{font-family:'Archivo';font-weight:800;font-size:18px;margin-top:6px}
+  .keyspec .l{font-size:12px;color:var(--gray-500);margin-top:2px}
+
+  /* Sections */
+  .sec{margin-top:40px}
+  .sec h2{font-size:24px;margin-bottom:16px}
+  .sec p{color:var(--gray-700);font-size:16px}
+  .features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+  .feature{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--gray-700)}
+  .feature .chk{width:22px;height:22px;border-radius:50%;background:rgba(31,170,89,.12);color:var(--green);display:grid;place-items:center;font-size:12px;flex:0 0 auto}
+  .spectable{width:100%;border-collapse:collapse;margin-top:4px}
+  .spectable tr{border-bottom:1px solid var(--gray-100)}
+  .spectable td{padding:13px 4px;font-size:15px}
+  .spectable td:first-child{color:var(--gray-500)}
+  .spectable td:last-child{text-align:right;font-weight:600}
+  .map{margin-top:8px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-100);height:280px;position:relative;background:
+    linear-gradient(135deg,#e8ebe0,#f2f3ee);display:grid;place-items:center}
+  .map .pin{text-align:center;color:var(--gray-500)}
+  .map .pin .dot{font-size:40px}
+
+  /* Sidebar */
+  .side{position:sticky;top:92px;display:flex;flex-direction:column;gap:16px}
+  .pricecard{border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow)}
+  .pricecard .code{font-size:12px;color:var(--gray-500);letter-spacing:.05em}
+  .pricecard .price{font-family:'Archivo';font-weight:900;font-size:38px;margin:4px 0 2px}
+  .pricecard .bs{font-size:14px;color:var(--gray-500);margin-bottom:18px}
+  .pricecard .btn{margin-bottom:10px}
+  .agency{border:1px solid var(--gray-100);border-radius:var(--radius-lg);padding:22px}
+  .agency .top{display:flex;align-items:center;gap:12px}
+  .agency .av{width:48px;height:48px;border-radius:12px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-family:'Archivo';font-weight:900;font-size:20px}
+  .agency .nm{font-weight:800;font-family:'Archivo';font-size:17px}
+  .agency .role{font-size:13px;color:var(--gray-500)}
+  .agency .verified-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(31,170,89,.1);color:var(--green);font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;margin-top:14px}
+  .safety{background:var(--gray-100);border-radius:var(--radius);padding:16px;font-size:13px;color:var(--gray-700)}
+  .safety strong{display:block;margin-bottom:6px;color:var(--ink)}
+
+  /* Similar */
+  .similar{padding:56px 0;background:var(--gray-100)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+  .car-card{background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+  .car-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .car-photo{height:180px;position:relative;overflow:hidden}
+  .car-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+  .car-card:hover .car-photo img{transform:scale(1.05)}
+  .car-photo .badge{position:absolute;top:12px;left:12px}
+  .car-body{padding:18px}
+  .car-price{font-family:'Archivo';font-weight:900;font-size:22px}
+  .car-title{font-weight:800;font-family:'Archivo';font-size:16px;margin-top:8px}
+  .car-loc{color:var(--gray-500);font-size:13px;margin-top:4px}
+  .car-specs{display:flex;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-100);font-size:12px;color:var(--gray-700);flex-wrap:wrap}
+
+  /* Footer */
+  footer{background:var(--ink);color:rgba(255,255,255,.75);padding:56px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{color:#fff;margin-bottom:14px}
+  .foot-brand p{font-size:14px;max-width:280px}
+  .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;font-size:14px;margin-bottom:10px}
+  .foot-col a:hover{color:var(--lime)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
+
+  @media(max-width:940px){
+    .detail{grid-template-columns:1fr;gap:28px}
+    .side{position:static}
+    .cards{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:640px){
+    .nav-links,.lang{display:none}
+    .menu-toggle{display:block}
+    .keyspecs{grid-template-columns:repeat(2,1fr)}
+    .features{grid-template-columns:1fr}
+    .cards{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+    <nav class="nav-links">
+      <a href="index.html#comprar">Comprar</a>
+      <a href="index.html#alquilar">Alquilar</a>
+      <a href="index.html#tipos">Por tipo</a>
+      <a href="directorio.html">Directorio</a>
+    </nav>
+    <div class="nav-right">
+      <span class="lang">🌐 Español ▾</span>
+      <a class="btn btn-ghost" href="#">Entrar</a>
+      <a class="btn btn-dark" href="#">Registrarme</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="crumb">
+  <div class="wrap">
+    <a href="index.html">Inicio</a><span class="sep">/</span>
+    <a href="index.html#comprar">Comprar</a><span class="sep">/</span>
+    <a href="#">SUVs</a><span class="sep">/</span>
+    <span class="cur">Toyota 4Runner 2022</span>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<main class="wrap detail">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="gallery">
+      <div class="main">
+        <div class="badges"><span class="badge sale">En venta</span><span class="badge verified">Verificado</span></div>
+        <img id="mainimg" src="img/4runner.jpg" alt="Toyota 4Runner 2022" style="object-position:center">
+        <span class="count">📷 12 fotos</span>
+      </div>
+      <div class="thumbs">
+        <div class="thumb active" data-src="img/4runner.jpg" data-pos="center"><img src="img/4runner.jpg" alt="Frontal"></div>
+        <div class="thumb" data-src="img/4runner-white.jpg" data-pos="center"><img src="img/4runner-white.jpg" alt="Lateral"></div>
+        <div class="thumb" data-src="img/4runner.jpg" data-pos="left"><img src="img/4runner.jpg" alt="Detalle" style="object-position:left"></div>
+        <div class="thumb" data-src="img/4runner-white.jpg" data-pos="right"><img src="img/4runner-white.jpg" alt="Trasera" style="object-position:right"></div>
+      </div>
+    </div>
+
+    <div class="titleblock">
+      <div class="kind">SUV · Usado</div>
+      <h1>Toyota 4Runner 2022</h1>
+      <div class="loc">📍 Chacao · Caracas · Distrito Capital</div>
+    </div>
+
+    <div class="keyspecs">
+      <div class="keyspec"><div class="ico">📅</div><div class="v">2022</div><div class="l">Año</div></div>
+      <div class="keyspec"><div class="ico">🛣️</div><div class="v">28.000</div><div class="l">Kilómetros</div></div>
+      <div class="keyspec"><div class="ico">⚙️</div><div class="v">Automático</div><div class="l">Transmisión</div></div>
+      <div class="keyspec"><div class="ico">⛽</div><div class="v">Gasolina</div><div class="l">Combustible</div></div>
+    </div>
+
+    <div class="sec">
+      <h2>Descripción</h2>
+      <p>Toyota 4Runner 2022 en excelente estado, único dueño y mantenimientos al día en concesionario autorizado. Motor 4.0L V6, tracción 4x4, ideal para ciudad y carretera. Cauchos nuevos, interior impecable y todos los papeles en regla listos para traspaso inmediato. Sin choques ni reparaciones estructurales.</p>
+    </div>
+
+    <div class="sec">
+      <h2>Equipamiento</h2>
+      <div class="features">
+        <div class="feature"><span class="chk">✓</span> Aire acondicionado</div>
+        <div class="feature"><span class="chk">✓</span> Tracción 4x4</div>
+        <div class="feature"><span class="chk">✓</span> Cámara de reversa</div>
+        <div class="feature"><span class="chk">✓</span> Sensores de estacionamiento</div>
+        <div class="feature"><span class="chk">✓</span> Apple CarPlay / Android Auto</div>
+        <div class="feature"><span class="chk">✓</span> Asientos de cuero</div>
+        <div class="feature"><span class="chk">✓</span> Rines de aleación</div>
+        <div class="feature"><span class="chk">✓</span> Control de crucero</div>
+        <div class="feature"><span class="chk">✓</span> 7 puestos</div>
+        <div class="feature"><span class="chk">✓</span> Bluetooth</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>Ficha técnica</h2>
+      <table class="spectable">
+        <tr><td>Marca</td><td>Toyota</td></tr>
+        <tr><td>Modelo</td><td>4Runner SR5</td></tr>
+        <tr><td>Año</td><td>2022</td></tr>
+        <tr><td>Kilometraje</td><td>28.000 km</td></tr>
+        <tr><td>Carrocería</td><td>SUV</td></tr>
+        <tr><td>Motor</td><td>4.0L V6</td></tr>
+        <tr><td>Transmisión</td><td>Automática</td></tr>
+        <tr><td>Tracción</td><td>4x4</td></tr>
+        <tr><td>Combustible</td><td>Gasolina</td></tr>
+        <tr><td>Puestos</td><td>7</td></tr>
+        <tr><td>Color</td><td>Blanco perlado</td></tr>
+        <tr><td>Placa</td><td>Terminal par</td></tr>
+      </table>
+    </div>
+
+    <div class="sec">
+      <h2>Ubicación</h2>
+      <div class="map">
+        <div class="pin"><div class="dot">📍</div>Chacao · Caracas · Distrito Capital</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="side">
+    <div class="pricecard">
+      <div class="code">Dashcode: CD-4RNR-2288</div>
+      <div class="price">$42.000</div>
+      <div class="bs">Bs. 30.481.374</div>
+      <a class="btn btn-wa btn-block" href="#">💬 Contactar por WhatsApp</a>
+      <a class="btn btn-dark btn-block" href="#">📞 Llamar</a>
+      <a class="btn btn-ghost btn-block" href="#">✉️ Enviar correo</a>
+      <div class="safety" style="margin-top:16px">
+        <strong>🛡️ Compra segura</strong>
+        Nunca pagues por adelantado sin ver el auto. Verifica los documentos antes de cualquier transacción.
+      </div>
+    </div>
+
+    <div class="agency">
+      <div class="top">
+        <span class="av">A</span>
+        <div>
+          <div class="nm">Automotriz Andes</div>
+          <div class="role">Concesionario · Caracas</div>
+        </div>
+      </div>
+      <div class="verified-tag">✓ Agencia verificada</div>
+      <a class="btn btn-ghost btn-block" href="#" style="margin-top:14px">Ver todos sus autos (37)</a>
+    </div>
+  </aside>
+
+</main>
+
+<!-- SIMILAR -->
+<section class="similar">
+  <div class="wrap">
+    <h2 style="font-size:28px">Autos similares</h2>
+    <p style="color:var(--gray-500);margin-top:6px">Otros SUVs que te pueden interesar</p>
+    <div class="cards">
+      <a class="car-card" href="auto.html">
+        <div class="car-photo"><img src="img/prado.jpg" alt="Prado"><span class="badge verified">Verificado</span></div>
+        <div class="car-body">
+          <div class="car-price">$65.000</div>
+          <div class="car-title">Toyota Land Cruiser Prado 2022</div>
+          <div class="car-loc">La Castellana · Caracas</div>
+          <div class="car-specs"><span>🛣️ 19.000 km</span><span>⚙️ Automático</span><span>⛽ Diésel</span></div>
+        </div>
+      </a>
+      <a class="car-card" href="auto.html">
+        <div class="car-photo"><img src="img/fortuner.jpg" alt="Fortuner"><span class="badge sale">En venta</span></div>
+        <div class="car-body">
+          <div class="car-price">$45.900</div>
+          <div class="car-title">Toyota Fortuner 2023</div>
+          <div class="car-loc">Las Mercedes · Caracas</div>
+          <div class="car-specs"><span>🛣️ 22.000 km</span><span>⚙️ Automático</span><span>⛽ Diésel</span></div>
+        </div>
+      </a>
+      <a class="car-card" href="auto.html">
+        <div class="car-photo"><img src="img/corolla-cross.webp" alt="Corolla Cross"><span class="badge rent" style="background:var(--blue);color:#fff">En alquiler</span></div>
+        <div class="car-body">
+          <div class="car-price">$70 <span style="font-size:13px;font-weight:600;color:var(--gray-500)">/ día</span></div>
+          <div class="car-title">Toyota Corolla Cross 2024</div>
+          <div class="car-loc">Maracaibo · Zulia</div>
+          <div class="car-specs"><span>🛣️ 15.000 km</span><span>⚙️ CVT</span><span>⛽ Híbrido</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+        <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
+      </div>
+      <div class="foot-col"><h4>Explorar</h4><a href="#">Autos en venta</a><a href="#">Autos en alquiler</a><a href="#">Por tipo</a><a href="#">Por estado</a></div>
+      <div class="foot-col"><h4>Cardash</h4><a href="#">Publicar gratis</a><a href="#">Directorio</a><a href="#">Guías</a><a href="#">Nosotros</a></div>
+      <div class="foot-col"><h4>Recursos</h4><a href="#">Ayuda</a><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Contacto</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Cardash. Todos los derechos reservados.</span>
+      <span>Hecho en Venezuela 🇻🇪</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Galería: al hacer clic en una miniatura, cambia la imagen principal
+  const mainImg = document.getElementById('mainimg');
+  document.querySelectorAll('.thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      mainImg.src = thumb.dataset.src;
+      mainImg.style.objectPosition = thumb.dataset.pos || 'center';
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

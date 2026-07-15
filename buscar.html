@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar autos · Cardash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#C7FF02;--lime-dark:#a8d900;--ink:#0d0f0a;--gray-900:#1a1c17;
+    --gray-700:#3a3d33;--gray-500:#6b6f62;--gray-300:#c9ccc0;--gray-100:#f2f3ee;
+    --white:#fff;--red:#e4443a;--blue:#2f6df0;
+    --radius:16px;--radius-lg:24px;--shadow:0 8px 30px rgba(0,0,0,.08);
+    --shadow-lg:0 20px 60px rgba(0,0,0,.15);--maxw:1280px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--gray-100);line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Archivo','Inter',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;border:none;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:var(--ink)}
+  .btn-lime:hover{background:var(--lime-dark)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--gray-300)}
+
+  /* Header */
+  header{background:var(--lime);position:sticky;top:0;z-index:50}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;color:var(--ink)}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:var(--ink);display:grid;place-items:center;font-size:20px}
+  .nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+  .nav-links a:hover{opacity:.65}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{font-weight:600;font-size:14px}
+  .menu-toggle{display:none;background:none;border:none;font-size:26px;cursor:pointer}
+
+  /* Search top bar */
+  .topbar{background:#fff;border-bottom:1px solid var(--gray-100)}
+  .topbar .wrap{padding:24px}
+  .topbar .row1{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+  .topbar h1{font-size:28px}
+  .viewtoggle{display:flex;gap:8px;align-items:center}
+  .toggle-group{display:flex;background:var(--gray-100);border-radius:999px;padding:4px}
+  .toggle-group button{border:none;background:none;padding:8px 16px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gray-500)}
+  .toggle-group button.on{background:var(--lime);color:var(--ink)}
+  .searchbar{display:flex;align-items:center;gap:12px;border:1.5px solid var(--gray-300);border-radius:999px;padding:6px 6px 6px 20px;max-width:720px}
+  .searchbar svg{opacity:.5;flex:0 0 auto}
+  .searchbar input{flex:1;border:none;outline:none;font-size:16px;font-family:inherit;background:none}
+
+  /* Layout */
+  .results-layout{display:grid;grid-template-columns:280px 1fr;gap:28px;padding:24px 0 64px;align-items:start}
+
+  /* Active chips */
+  .active-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;grid-column:1/-1}
+  .achip{background:var(--lime);color:var(--ink);font-weight:700;font-size:13px;padding:7px 12px;border-radius:999px;display:inline-flex;gap:7px;align-items:center;cursor:pointer}
+  .achip .x{font-weight:900}
+  .achip.clear{background:#fff;border:1px solid var(--gray-300);color:var(--gray-700)}
+
+  /* Filters sidebar */
+  .filters{background:#fff;border-radius:var(--radius-lg);padding:22px;position:sticky;top:92px;box-shadow:var(--shadow)}
+  .fgroup{padding:18px 0;border-bottom:1px solid var(--gray-100)}
+  .fgroup:first-child{padding-top:0}
+  .fgroup:last-child{border-bottom:none;padding-bottom:0}
+  .flabel{font-weight:700;font-size:14px;margin-bottom:12px;display:block}
+  .op-toggle{display:flex;background:var(--gray-100);border-radius:999px;padding:4px}
+  .op-toggle button{flex:1;border:none;background:none;padding:9px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gray-500)}
+  .op-toggle button.on{background:var(--lime);color:var(--ink)}
+  .switch{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--gray-300);border-radius:12px;padding:12px 14px;cursor:pointer;font-size:14px;font-weight:600}
+  .switch .track{width:42px;height:24px;background:var(--gray-300);border-radius:999px;position:relative;transition:.2s}
+  .switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+  .switch.on .track{background:var(--lime)}
+  .switch.on .track::after{left:21px}
+  select,.inp{width:100%;border:1px solid var(--gray-300);border-radius:12px;padding:11px 12px;font-size:14px;font-family:inherit;background:#fff;outline:none;cursor:pointer}
+  select:focus,.inp:focus{border-color:var(--ink)}
+  .price-row{display:flex;align-items:center;gap:8px}
+  .price-row span{color:var(--gray-500)}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{border:1px solid var(--gray-300);background:#fff;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;user-select:none}
+  .pill.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .clear-all{width:100%;margin-top:4px}
+
+  /* Results */
+  .results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+  .results-head .count{font-weight:700;font-size:16px}
+  .results-head .count span{color:var(--lime);-webkit-text-stroke:.3px var(--gray-500)}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .car-card{background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);transition:.2s;cursor:pointer;display:block}
+  .car-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+  .car-photo{height:180px;position:relative;overflow:hidden;background:var(--gray-100)}
+  .car-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+  .car-card:hover .car-photo img{transform:scale(1.05)}
+  .badge{position:absolute;top:12px;left:12px;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;z-index:2}
+  .badge.sale{background:var(--lime);color:var(--ink)}
+  .badge.rent{background:var(--blue);color:#fff}
+  .badge.verified{position:absolute;top:12px;right:12px;left:auto;background:#fff;color:var(--ink);border:1px solid var(--gray-300)}
+  .car-body{padding:18px}
+  .car-price{font-family:'Archivo';font-weight:900;font-size:23px}
+  .car-price small{font-family:'Inter';font-weight:600;font-size:13px;color:var(--gray-500)}
+  .car-bs{font-size:13px;color:var(--gray-500);margin-top:1px}
+  .car-kind{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin:10px 0 3px}
+  .car-title{font-weight:800;font-family:'Archivo';font-size:17px}
+  .car-loc{color:var(--gray-500);font-size:13px;margin-top:3px}
+  .car-specs{display:flex;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-100);font-size:12px;color:var(--gray-700);flex-wrap:wrap}
+  .empty{background:#fff;border-radius:var(--radius-lg);padding:60px 24px;text-align:center;color:var(--gray-500)}
+  .empty .big{font-size:44px;margin-bottom:12px}
+  .empty h3{font-size:20px;color:var(--ink);margin-bottom:6px}
+
+  /* Footer */
+  footer{background:var(--ink);color:rgba(255,255,255,.75);padding:56px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+  .foot-brand .brand{color:#fff;margin-bottom:14px}
+  .foot-brand p{font-size:14px;max-width:280px}
+  .foot-col h4{color:#fff;font-size:14px;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .foot-col a{display:block;font-size:14px;margin-bottom:10px}
+  .foot-col a:hover{color:var(--lime)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:44px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px}
+
+  .mobile-filter-btn{display:none}
+  @media(max-width:940px){
+    .results-layout{grid-template-columns:1fr}
+    .filters{position:fixed;inset:0;z-index:100;border-radius:0;overflow-y:auto;display:none}
+    .filters.open{display:block}
+    .filters .close-f{display:block}
+    .cards{grid-template-columns:1fr 1fr}
+    .mobile-filter-btn{display:inline-flex}
+  }
+  .close-f{display:none;width:100%;margin-top:16px}
+  @media(max-width:640px){
+    .nav-links,.lang{display:none}
+    .menu-toggle{display:block}
+    .cards{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+    <nav class="nav-links">
+      <a href="index.html#comprar">Comprar</a>
+      <a href="index.html#alquilar">Alquilar</a>
+      <a href="index.html#tipos">Por tipo</a>
+      <a href="directorio.html">Directorio</a>
+    </nav>
+    <div class="nav-right">
+      <span class="lang">🌐 Español ▾</span>
+      <a class="btn btn-ghost" href="#">Entrar</a>
+      <a class="btn btn-dark" href="#">Registrarme</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú">☰</button>
+  </div>
+</header>
+
+<!-- TOP SEARCH BAR -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="row1">
+      <h1>Buscar autos</h1>
+      <div class="viewtoggle">
+        <a class="btn btn-ghost" href="#" style="padding:9px 16px">🔖 Guardar búsqueda</a>
+        <div class="toggle-group">
+          <button class="on">☰ Lista</button>
+          <button>🗺️ Mapa</button>
+        </div>
+      </div>
+    </div>
+    <div class="searchbar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="q" placeholder="Marca, modelo, ciudad o dashcode...">
+      <button class="btn btn-lime" onclick="apply()">Explorar</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS LAYOUT -->
+<div class="wrap results-layout">
+
+  <!-- Active chips (full width) -->
+  <div class="active-chips" id="chips"></div>
+
+  <!-- FILTERS -->
+  <aside class="filters" id="filters">
+    <div class="fgroup">
+      <span class="flabel">Tipo de operación</span>
+      <div class="op-toggle">
+        <button data-op="venta" class="on">En venta</button>
+        <button data-op="alquiler">En alquiler</button>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <div class="switch" id="sinChoques">
+        <span>🛡️ Sin choques</span>
+        <span class="track"></span>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Tipo de vehículo</span>
+      <select id="tipo">
+        <option value="">Todos los tipos</option>
+        <option>Sedán</option>
+        <option>SUV</option>
+        <option>Pickup</option>
+      </select>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Marca</span>
+      <select id="marca">
+        <option value="">Todas las marcas</option>
+        <option>Toyota</option>
+        <option>Ford</option>
+        <option>Chevrolet</option>
+        <option>Hyundai</option>
+      </select>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Estado</span>
+      <select id="estado">
+        <option value="">Todos los estados</option>
+        <option>Distrito Capital</option>
+        <option>Miranda</option>
+        <option>Carabobo</option>
+        <option>Zulia</option>
+        <option>Lara</option>
+        <option>Aragua</option>
+        <option>Monagas</option>
+      </select>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Precio (USD)</span>
+      <div class="price-row">
+        <select id="pmin"><option value="">Mín.</option><option>15000</option><option>20000</option><option>30000</option><option>40000</option><option>50000</option></select>
+        <span>—</span>
+        <select id="pmax"><option value="">Máx.</option><option>30000</option><option>40000</option><option>50000</option><option>60000</option><option>70000</option></select>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Año desde</span>
+      <select id="anio">
+        <option value="">Cualquiera</option>
+        <option>2019</option><option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option>
+      </select>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Transmisión</span>
+      <div class="pills" data-filter="transmision">
+        <span class="pill">Automático</span>
+        <span class="pill">Manual</span>
+        <span class="pill">CVT</span>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Combustible</span>
+      <div class="pills" data-filter="combustible">
+        <span class="pill">Gasolina</span>
+        <span class="pill">Diésel</span>
+        <span class="pill">Híbrido</span>
+        <span class="pill">Eléctrico</span>
+      </div>
+    </div>
+
+    <div class="fgroup">
+      <span class="flabel">Kilometraje máx.</span>
+      <select id="kmmax">
+        <option value="">Cualquiera</option>
+        <option value="30000">Hasta 30.000 km</option>
+        <option value="50000">Hasta 50.000 km</option>
+        <option value="80000">Hasta 80.000 km</option>
+        <option value="100000">Hasta 100.000 km</option>
+      </select>
+    </div>
+
+    <button class="btn btn-ghost close-f" onclick="document.getElementById('filters').classList.remove('open')">Ver resultados</button>
+  </aside>
+
+  <!-- RESULTS -->
+  <main class="results">
+    <div class="results-head">
+      <div class="count"><span id="count">0</span> autos encontrados</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn btn-ghost mobile-filter-btn" onclick="document.getElementById('filters').classList.add('open')">⚙️ Filtros</button>
+        <select id="sort" style="width:auto">
+          <option value="rel">Recomendados</option>
+          <option value="pasc">Menor precio</option>
+          <option value="pdesc">Mayor precio</option>
+          <option value="anio">Más nuevo</option>
+          <option value="km">Menos kilómetros</option>
+        </select>
+      </div>
+    </div>
+    <div class="cards" id="grid"></div>
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html"><span class="logo">🚗</span>Cardash</a>
+        <p>El marketplace de autos de Venezuela. Compra, vende y alquila con vendedores reales y verificados.</p>
+      </div>
+      <div class="foot-col"><h4>Explorar</h4><a href="#">Autos en venta</a><a href="#">Autos en alquiler</a><a href="#">Por tipo</a><a href="#">Por estado</a></div>
+      <div class="foot-col"><h4>Cardash</h4><a href="#">Publicar gratis</a><a href="#">Directorio</a><a href="#">Guías</a><a href="#">Nosotros</a></div>
+      <div class="foot-col"><h4>Recursos</h4><a href="#">Ayuda</a><a href="#">Términos</a><a href="#">Privacidad</a><a href="#">Contacto</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Cardash. Todos los derechos reservados.</span>
+      <span>Hecho en Venezuela 🇻🇪</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const TASA = 725.75;
+  const AUTOS = [
+    {modelo:"Toyota 4Runner 2022", marca:"Toyota", tipo:"SUV", op:"venta", precio:42000, anio:2022, km:28000, trans:"Automático", comb:"Gasolina", estado:"Distrito Capital", ciudad:"Chacao · Caracas", verif:true, choque:false, foto:"img/4runner.jpg"},
+    {modelo:"Toyota Hilux 2023", marca:"Toyota", tipo:"Pickup", op:"venta", precio:38500, anio:2023, km:34000, trans:"Automático", comb:"Diésel", estado:"Miranda", ciudad:"Los Palos Grandes · Caracas", verif:false, choque:false, foto:"img/hilux.jpg"},
+    {modelo:"Toyota Corolla 2021", marca:"Toyota", tipo:"Sedán", op:"venta", precio:24900, anio:2021, km:52000, trans:"CVT", comb:"Gasolina", estado:"Carabobo", ciudad:"Valencia", verif:false, choque:false, foto:"img/corolla.jpg"},
+    {modelo:"Toyota Land Cruiser Prado 2022", marca:"Toyota", tipo:"SUV", op:"venta", precio:65000, anio:2022, km:19000, trans:"Automático", comb:"Diésel", estado:"Distrito Capital", ciudad:"La Castellana · Caracas", verif:true, choque:false, foto:"img/prado.jpg"},
+    {modelo:"Toyota Fortuner 2023", marca:"Toyota", tipo:"SUV", op:"venta", precio:45900, anio:2023, km:22000, trans:"Automático", comb:"Diésel", estado:"Miranda", ciudad:"Las Mercedes · Caracas", verif:false, choque:false, foto:"img/fortuner.jpg"},
+    {modelo:"Toyota Corolla Cross 2024", marca:"Toyota", tipo:"SUV", op:"alquiler", precio:70, anio:2024, km:15000, trans:"CVT", comb:"Híbrido", estado:"Zulia", ciudad:"Maracaibo", verif:true, choque:false, foto:"img/corolla-cross.webp"},
+    {modelo:"Toyota Sequoia 2021", marca:"Toyota", tipo:"SUV", op:"venta", precio:58000, anio:2021, km:41000, trans:"Automático", comb:"Gasolina", estado:"Lara", ciudad:"Barquisimeto", verif:false, choque:false, foto:"img/sequoia.jpg"},
+    {modelo:"Toyota Corolla 2019", marca:"Toyota", tipo:"Sedán", op:"venta", precio:18500, anio:2019, km:78000, trans:"Automático", comb:"Gasolina", estado:"Aragua", ciudad:"Maracay", verif:false, choque:true, foto:"img/corolla.jpg"},
+    {modelo:"Toyota Hilux 2020", marca:"Toyota", tipo:"Pickup", op:"venta", precio:31000, anio:2020, km:89000, trans:"Manual", comb:"Diésel", estado:"Monagas", ciudad:"Maturín", verif:false, choque:false, foto:"img/hilux.jpg"},
+    {modelo:"Toyota 4Runner 2019", marca:"Toyota", tipo:"SUV", op:"venta", precio:34000, anio:2019, km:95000, trans:"Automático", comb:"Gasolina", estado:"Distrito Capital", ciudad:"El Cafetal · Caracas", verif:false, choque:true, foto:"img/4runner-white.jpg"},
+    {modelo:"Toyota Fortuner 2021", marca:"Toyota", tipo:"SUV", op:"alquiler", precio:85, anio:2021, km:38000, trans:"Automático", comb:"Diésel", estado:"Distrito Capital", ciudad:"Altamira · Caracas", verif:true, choque:false, foto:"img/fortuner.jpg"},
+    {modelo:"Toyota Corolla Cross 2023", marca:"Toyota", tipo:"SUV", op:"venta", precio:32000, anio:2023, km:24000, trans:"CVT", comb:"Híbrido", estado:"Carabobo", ciudad:"Valencia", verif:false, choque:false, foto:"img/corolla-cross.webp"}
+  ];
+
+  const state = {op:"venta", sinChoques:false, tipo:"", marca:"", estado:"", pmin:"", pmax:"", anio:"", trans:new Set(), comb:new Set(), kmmax:"", q:"", sort:"rel"};
+
+  const fmt = n => n.toLocaleString('es-VE');
+  const bs = n => "Bs. " + Math.round(n*TASA).toLocaleString('es-VE');
+
+  function match(a){
+    if(a.op!==state.op) return false;
+    if(state.sinChoques && a.choque) return false;
+    if(state.tipo && a.tipo!==state.tipo) return false;
+    if(state.marca && a.marca!==state.marca) return false;
+    if(state.estado && a.estado!==state.estado) return false;
+    if(state.pmin && a.precio < +state.pmin) return false;
+    if(state.pmax && a.precio > +state.pmax) return false;
+    if(state.anio && a.anio < +state.anio) return false;
+    if(state.trans.size && !state.trans.has(a.trans)) return false;
+    if(state.comb.size && !state.comb.has(a.comb)) return false;
+    if(state.kmmax && a.km > +state.kmmax) return false;
+    if(state.q){ const t=(a.modelo+" "+a.ciudad+" "+a.estado).toLowerCase(); if(!t.includes(state.q.toLowerCase())) return false; }
+    return true;
+  }
+
+  function sortList(list){
+    const s=state.sort;
+    if(s==="pasc") return list.sort((a,b)=>a.precio-b.precio);
+    if(s==="pdesc") return list.sort((a,b)=>b.precio-a.precio);
+    if(s==="anio") return list.sort((a,b)=>b.anio-a.anio);
+    if(s==="km") return list.sort((a,b)=>a.km-b.km);
+    return list;
+  }
+
+  function card(a){
+    const badge = a.op==="alquiler" ? '<span class="badge rent">En alquiler</span>' : '<span class="badge sale">En venta</span>';
+    const verif = a.verif ? '<span class="badge verified">Verificado</span>' : '';
+    const price = a.op==="alquiler" ? `$${fmt(a.precio)}<small> / día</small>` : `$${fmt(a.precio)}`;
+    return `<a class="car-card" href="auto.html">
+      <div class="car-photo"><img src="${a.foto}" alt="${a.modelo}" loading="lazy">${badge}${verif}</div>
+      <div class="car-body">
+        <div class="car-price">${price}</div>
+        <div class="car-bs">${bs(a.precio)}${a.op==="alquiler"?" / día":""}</div>
+        <div class="car-kind">${a.tipo}</div>
+        <div class="car-title">${a.modelo}</div>
+        <div class="car-loc">📍 ${a.ciudad}</div>
+        <div class="car-specs"><span>🛣️ ${fmt(a.km)} km</span><span>⚙️ ${a.trans}</span><span>⛽ ${a.comb}</span></div>
+      </div>
+    </a>`;
+  }
+
+  function chipsHtml(){
+    const c=[];
+    c.push(`<span class="achip" data-clear="op">${state.op==="venta"?"En venta":"En alquiler"}</span>`);
+    if(state.sinChoques) c.push(`<span class="achip" data-clear="sinChoques">Sin choques <span class="x">×</span></span>`);
+    if(state.tipo) c.push(`<span class="achip" data-clear="tipo">${state.tipo} <span class="x">×</span></span>`);
+    if(state.marca) c.push(`<span class="achip" data-clear="marca">${state.marca} <span class="x">×</span></span>`);
+    if(state.estado) c.push(`<span class="achip" data-clear="estado">${state.estado} <span class="x">×</span></span>`);
+    if(state.pmin) c.push(`<span class="achip" data-clear="pmin">Desde $${fmt(+state.pmin)} <span class="x">×</span></span>`);
+    if(state.pmax) c.push(`<span class="achip" data-clear="pmax">Hasta $${fmt(+state.pmax)} <span class="x">×</span></span>`);
+    if(state.anio) c.push(`<span class="achip" data-clear="anio">Desde ${state.anio} <span class="x">×</span></span>`);
+    state.trans.forEach(t=>c.push(`<span class="achip" data-clear="trans:${t}">${t} <span class="x">×</span></span>`));
+    state.comb.forEach(t=>c.push(`<span class="achip" data-clear="comb:${t}">${t} <span class="x">×</span></span>`));
+    if(state.kmmax) c.push(`<span class="achip" data-clear="kmmax">Hasta ${fmt(+state.kmmax)} km <span class="x">×</span></span>`);
+    if(state.q) c.push(`<span class="achip" data-clear="q">"${state.q}" <span class="x">×</span></span>`);
+    c.push(`<span class="achip clear" data-clear="all">Limpiar todo</span>`);
+    return c.join("");
+  }
+
+  function render(){
+    let list = AUTOS.filter(match);
+    list = sortList(list.slice());
+    document.getElementById('count').textContent = list.length;
+    document.getElementById('grid').innerHTML = list.length
+      ? list.map(card).join("")
+      : `<div class="empty" style="grid-column:1/-1"><div class="big">🔍</div><h3>No encontramos autos con esos filtros</h3><p>Prueba ampliar el rango de precio o quitar algún filtro.</p></div>`;
+    document.getElementById('chips').innerHTML = chipsHtml();
+    bindChips();
+  }
+
+  function apply(){ state.q = document.getElementById('q').value.trim(); render(); }
+
+  function bindChips(){
+    document.querySelectorAll('.achip[data-clear]').forEach(ch=>{
+      ch.onclick=()=>{
+        const k=ch.dataset.clear;
+        if(k==="all"){ resetAll(); }
+        else if(k==="op"){ /* op no se limpia, es obligatorio */ }
+        else if(k==="sinChoques"){ state.sinChoques=false; syncSwitch(); }
+        else if(k.startsWith("trans:")){ state.trans.delete(k.split(":")[1]); syncPills(); }
+        else if(k.startsWith("comb:")){ state.comb.delete(k.split(":")[1]); syncPills(); }
+        else if(k==="q"){ state.q=""; document.getElementById('q').value=""; }
+        else { state[k]=""; const el=document.getElementById(k); if(el) el.value=""; }
+        render();
+      };
+    });
+  }
+
+  function syncSwitch(){ document.getElementById('sinChoques').classList.toggle('on', state.sinChoques); }
+  function syncPills(){
+    document.querySelectorAll('.pills').forEach(p=>{
+      const key=p.dataset.filter==="transmision"?state.trans:state.comb;
+      p.querySelectorAll('.pill').forEach(pl=>pl.classList.toggle('on', key.has(pl.textContent)));
+    });
+  }
+  function resetAll(){
+    state.sinChoques=false; state.tipo=""; state.marca=""; state.estado="";
+    state.pmin=""; state.pmax=""; state.anio=""; state.kmmax=""; state.q="";
+    state.trans.clear(); state.comb.clear();
+    ['tipo','marca','estado','pmin','pmax','anio','kmmax'].forEach(id=>document.getElementById(id).value="");
+    document.getElementById('q').value="";
+    syncSwitch(); syncPills();
+  }
+
+  // Bind controls
+  document.querySelectorAll('.op-toggle button').forEach(b=>{
+    b.onclick=()=>{ document.querySelectorAll('.op-toggle button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); state.op=b.dataset.op; render(); };
+  });
+  document.getElementById('sinChoques').onclick=()=>{ state.sinChoques=!state.sinChoques; syncSwitch(); render(); };
+  ['tipo','marca','estado','pmin','pmax','anio','kmmax'].forEach(id=>{
+    document.getElementById(id).onchange=e=>{ state[id]=e.target.value; render(); };
+  });
+  document.querySelectorAll('.pills').forEach(p=>{
+    p.querySelectorAll('.pill').forEach(pl=>{
+      pl.onclick=()=>{
+        const set = p.dataset.filter==="transmision"?state.trans:state.comb;
+        const v=pl.textContent;
+        set.has(v)?set.delete(v):set.add(v);
+        pl.classList.toggle('on');
+        render();
+      };
+    });
+  });
+  document.getElementById('sort').onchange=e=>{ state.sort=e.target.value; render(); };
+  document.getElementById('q').addEventListener('keydown',e=>{ if(e.key==="Enter") apply(); });
+
+  // Lista/Mapa toggle (demo visual)
+  document.querySelectorAll('.toggle-group button').forEach(b=>{
+    b.onclick=()=>{ document.querySelectorAll('.toggle-group button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); };
+  });
+
+  render();
+</script>
+</body>
+</html>
